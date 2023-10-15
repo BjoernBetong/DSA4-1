@@ -135,27 +135,23 @@ async function main() {
 		switch(SelectRuneInput){
             case 0:
                 complexity = 6;
-				nameRune = "Felsenrune";
+				nameRune = "Felsenrune"
 				RuneOutput = "Wundschwelle: +";
-				RuneOutput2 = 1 + Math.round(ritualResult/5);
 				break;
             case 1:
                 complexity = 5;	
-				nameRune = "Friedensrune";
+				nameRune = "Friedensrune"
 				RuneOutput = "Jähzorn, Rachsucht und andere schlechte Eigenschaften: -";
-				RuneOutput2 = 1 + Math.round(ritualResult/3);
 				break;
             case 2:
                 complexity = 6;			
-				nameRune = "Windrune";
+				nameRune = "Windrune"
 				RuneOutput = "Geschwindigkeit: +";
-				RuneOutput2 = 1 + Math.round(ritualResult/6);
 				break;
 			case 3:
                 complexity = 6;		
-				nameRune = "Wogensturmrune";
+				nameRune = "Wogensturmrune"
 				RuneOutput = "Schwimmen, Boote fahren, Seefahrt: +";
-				RuneOutput2 = 1 + Math.round(ritualResult/5);
 				break;
         }
 
@@ -353,6 +349,16 @@ async function main() {
 				token.actor.update({'system.base.resources.astralEnergy.value':aspUpdate});
 			}
 
+			if(SelectRuneInput === 0){
+				RuneOutput2 = 1 + Math.round(ritualResult/5);
+			}if(SelectRuneInput === 1){
+				RuneOutput2 = 1 + Math.round(ritualResult/3);
+			}if(SelectRuneInput === 2){
+				RuneOutput2 = 1 + Math.round(ritualResult/6);				
+			}if(SelectRuneInput === 3){
+				RuneOutput2 = 1 + Math.round(ritualResult/5);			
+			}
+
 			//Chat Output
             flavor = "<b> Erstellung einer Rune </b>";
 			flavor += "<br>" + Eigenschaft1 + ": " + w1 + "/" + "<b>" + Att1 + "</b>" + " (" + resOne + ")";
@@ -378,7 +384,7 @@ async function main() {
 				flavor += "<b>" + tokenName + "</b>" + failOut + " (<b>" + Craft + "</b>)" + failOut2 + hr;
 				if(ritualResult > 0){
 					flavor += "<b>" + nameRune + ":</b>";
-					flavor += "<br>" + RuneOutput + RuneOutput2 + "</br>"
+					flavor += "<br>" + RuneOutput + RuneOutput2 + "</br>";
 				}
             }
             roll.toMessage ({
