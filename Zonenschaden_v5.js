@@ -1240,7 +1240,7 @@ async function main() {
 				flavor += "<br>LA: " + LA + " / Br: " + Br + " / RA: " + RA;
 				flavor += "<br>-----Ba: " + Ba + " / Rü: " + Ru + "----";
 				flavor += "<br>-----<b>LB: " + LB + "</b> / RB: " + RB + "----";
-			}if(Hitzone == "Rechtes  Bein"){
+			}if(Hitzone == "Rechtes Bein"){
 				flavor += "<br>---------Ko: " + Ko + "---------";
 				flavor += "<br>LA: " + LA + " / Br: " + Br + " / RA: " + RA;
 				flavor += "<br>-----Ba: " + Ba + " / Rü: " + Ru + "----";
