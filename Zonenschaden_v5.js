@@ -1,4 +1,4 @@
-// Skript für den Zonenschaden
+// Skript für den Zonenschaden inkl. Zonenwunden 
 
 
 main();
