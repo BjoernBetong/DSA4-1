@@ -45,7 +45,7 @@ async function main() {
 		const magicResistance = token.actor.system.base.combatAttributes.passive.magicResistance.value; 																							//Magieresistenz	MR
 		const astralEnergy = token.actor.system.base.resources.astralEnergy.value;																													//Astralenergie		AE
 		const lepValue = token.actor.system.base.resources.vitality.value;
-		const iniValue = token.actor.system.initiativeMod;
+		const iniValue = token.actor.system.base.combatAttributes.active.baseInitiative.value;
 		const lepMax = token.actor.system.base.resources.vitality.max;
 		const aupValue = token.actor.system.base.resources.endurance.value;
 		const aupMax = token.actor.system.base.resources.endurance.max;
@@ -1263,9 +1263,9 @@ async function main() {
 		iniUpdate = addINIloss;
         
         token.actor.update({
-            'system.base.resources.vitality.value': lepUpdate,
-            'system.base.resources.endurance.value': aupUpdate,
-			'system.base.initiativeMod': iniUpdate
+        'system.base.resources.vitality.value': lepUpdate,
+        'system.base.resources.endurance.value': aupUpdate,
+	'system.data.base.combatAttributes.active.baseInitiative.value': iniUpdate
         });
     }
 		})})})
