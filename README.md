@@ -97,5 +97,4 @@ o	Während die Helden arbeiten müssen sie auch für ihren Lebensunterhalt sorge
 - Prachtvoll (SO: 16+): 500+ Dukaten pro Monat
 o	Lebt ein Held/eine Heldin während der Zeit zwischen den Abenteuern über oder unter seinen Verhältnissen, so steigt bzw. sinkt der SO um einen Punkt
 •	Wie lange der Held/die Heldin Arbeit findet, wird mit 1W6 Tag pro Woche bestimmt
-o	Wenn mindestens drei Tage gearbeitet wird, darf der Held/die Heldin jedes verwendete Talent bzw. Eigenschaft einmal bis zu einem maximalen TaW von 12 
 
