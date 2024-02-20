@@ -3,7 +3,7 @@ Anleitung für "Zwischen den Abenteuern":
 Zwischen den Abenteuern
 
 Voraussetzungen:
-•	Der Sozialstatus muss in token.actor.system.base.social.social_status.value hinterlegt sein (einfach Held aus Foundry exportieren, Zahl eintragen, dann den Held wieder importieren)
+•	Der Sozialstatus muss in token.actor.system.base.social.social_status.value hinterlegt sein (am besten die Werte über das Skript "Belohnungen" einfügen)
 •	Für Magier: Ritualkenntnis: Gildenmagie, Ritualkenntnis: Runenzauberei oder Ritualkenntnis: Scharlatan muss als Talent angelegt sein
 
 •	Zwischen den Abenteuern wählt ein Held eine Tätigkeit, der er/sie in der Zwischenzeit nachgehen will. Wird keine Tätigkeit gewählt, bekommt der/die Held*in auch kein Lohn
