@@ -121,7 +121,7 @@ async function main() {
 
 		if(Pay === -1){
 			newSO = Sozialstatus - inputSocialValue;
-			newXP = - inputXPValue;
+			newXP = XP - inputXPValue;
 			newMoney = Wealth - Value;
 			newDukaten = Math.floor(newMoney/1000);
 			newSilber = Math.floor((newMoney/100) - (newDukaten*10));
@@ -129,7 +129,7 @@ async function main() {
 			newKreuzer = Math.floor(newMoney/1 - (newHeller*10) - (newSilber*100) - (newDukaten*1000));
 		}else{
 			newSO = Sozialstatus + inputSocialValue;
-			newXP = inputXPValue;
+			newXP = XP + inputXPValue;
 			newMoney = Wealth + Value;
 			newDukaten = Math.floor(newMoney/1000);
 			newSilber = Math.floor((newMoney/100) - (newDukaten*10));
@@ -146,7 +146,7 @@ async function main() {
 		if(newSO != Sozialstatus){
 			flavor += "Neuer SO: <b>" + newSO + "</b><br>";
 		}if(newXP != XP){
-			flavor += "<b>" + newXP + "</b> Abenteuerpunkte<br>";
+			flavor += "<b>" + inputXPValue + "</b> Abenteuerpunkte<br>";
 		}
 		if(ValueDukaten > 0){
 			if(ValueDukaten === 1){
@@ -174,7 +174,7 @@ async function main() {
     function updating(newMoney, newSO, newXP){
        
 		MoneyUpdate = newMoney
-		XPupdate = XP + newXP
+		XPupdate = newXP
 		SOupdate = newSO
 
 		token.actor.update({
