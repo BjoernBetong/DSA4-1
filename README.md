@@ -1,6 +1,9 @@
-Anleitung für "Zwischen den Abenteuern":
+Das Skripte "Belohnung" und "Geldbörse" nutzen die Pfade system.base.appearance.height und system.base.appearance.weight als Depot für das Vermögen bzw. Abenteuerpunkte.
 
-Zwischen den Abenteuern
+
+
+
+"Zwischen den Abenteuern"
 
 Voraussetzungen:
 •	Der Sozialstatus muss in token.actor.system.base.social.social_status.value hinterlegt sein (am besten die Werte über das Skript "Belohnungen" einfügen)
