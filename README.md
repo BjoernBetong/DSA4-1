@@ -1,4 +1,4 @@
-Das Skripte "Belohnung" und "Geldbörse" nutzen die Pfade system.base.appearance.height und system.base.appearance.weight als Depot für das Vermögen bzw. Abenteuerpunkte.
+Die Skripte "Belohnung" und "Geldbörse" nutzen die Pfade system.base.appearance.height und system.base.appearance.weight als Depot für das Vermögen bzw. Abenteuerpunkte.
 
 
 
