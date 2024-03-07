@@ -28,6 +28,12 @@ async function main() {
 	//Name des gewählten Helden
 		const tokenName = token.actor.name;
 
+	//Abenteuerpunkte
+		const XP = token.actor.system.base.appearance.weight;	
+	
+	//Sozialstatus
+		const Sozialstatus = token.actor.system.base.social.social_status.value;																													//Astralenergie		AE
+
 	//Münzen
 		const Wealth = token.actor.system.base.appearance.height;	
 		WealthDukaten = Math.floor(Wealth/1000);
@@ -56,15 +62,18 @@ async function main() {
 	inputDialog += divFlexStart + `
 			<label for="checkPay">Wird das Geld bezahlt?</label><input type="checkbox" id="checkPay" name="checkPay" style="float:right">
 		`+ divFlexEnd + hr;
-	inputDialog += "aktuelles Vermögen: <br>";
+	inputDialog += "<u>aktuelle Werte: </u><br>";
+	inputDialog += "<b>" + XP + "</b> Abenteuerpunkte<br>";
+	inputDialog += "Sozialstatus: <b>" + Sozialstatus + "</b><br><br>";
+	inputDialog += "<u>aktuelles Vermögen: </u><br>";
 	if(WealthDukaten === 1){
-		inputDialog += WealthDukaten + " Dukate<br>";
+		inputDialog += "<b>" + WealthDukaten + "</b> Dukate<br>";
 	}else{
-		inputDialog += WealthDukaten + " Dukaten<br>";
+		inputDialog += "<b>" + WealthDukaten + "</b> Dukaten<br>";
 	}
-	inputDialog += WealthSilber + " Silber<br>";
-	inputDialog += WealthHeller + " Heller<br>";
-	inputDialog += WealthKreuzer + " Kreuzer";
+	inputDialog += "<b>" + WealthSilber + "</b> Silber<br>";
+	inputDialog += "<b>" + WealthHeller + "</b> Heller<br>";
+	inputDialog += "<b>" + WealthKreuzer + "</b> Kreuzer";
 
 
 //###############################################################################################################################################################################################################################################    
