@@ -1,4 +1,4 @@
-//Skript für die handwerkliche Herstellung und Aktivierung bzw. Reaktivierung von Runen
+//Skript für die Beschwörung von Elementaren (nach WdZ, EG) - nur für Magier
 
 main();
 async function main() {
