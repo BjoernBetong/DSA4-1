@@ -1,4 +1,5 @@
 //Skript für die Entstehung von elementaren Mindergeistern (nach WdZ, EG)
+//Hausregel: Bei der Entstehung von Mindergeistern hat der Magier die Chance, den Mindergeist zu kontrollieren, um keinen Nachteil zu erhalten. Analog zur Kontrollprobe aus Beschwörungszaubern wird ein W20 Wurf auf einen Kontrollwert aus (MU/IN/CH/CH)/4 modifiziert um Merkmalskenntnis/Begabung abgelegt. Geling die Kontrollprobe bleibt der Mindergeist friedlich und stört den Zaubernden nicht, missling die sind alle Proben um 1 Punkt erschwert, bei einer 20 greift der Mindergeist sogar an.
 
 main();
 async function main() {
@@ -24,6 +25,38 @@ async function main() {
 		const strength = token.actor.system.base.basicAttributes.strength.value;																													//Körperkraft		KK
 		const magicResistance = token.actor.system.base.combatAttributes.passive.magicResistance.value; 																							//Magieresistenz	MR
 		const astralEnergy = token.actor.system.base.resources.astralEnergy.value;																													//Astralenergie		AE
+
+	//Vor und Nachteile des Helden
+		const Affinity = token.actor.items.find(item => item.name === "Affinität zu  Elementaren");
+		const AffinityMod = (Affinity === undefined)? 0 : 3;
+		const BGFire = token.actor.items.find(item => item.name === "Begabung für  Elementar (Feuer)");
+		const BGFireMod = (BGFire === undefined)? 0 : 2;
+		const BGWater = token.actor.items.find(item => item.name === "Begabung für  Elementar (Wasser)");
+		const BGWaterMod = (BGWater === undefined)? 0 : 2;
+		const BGHumus = token.actor.items.find(item => item.name === "Begabung für  Elementar (Humus)");
+		const BGHumusMod = (BGHumus === undefined)? 0 : 2;
+		const BGIce = token.actor.items.find(item => item.name === "Begabung für  Elementar (Eis)");
+		const BGIceMod = (BGIce === undefined)? 0 : 2;
+		const BGOre = token.actor.items.find(item => item.name === "Begabung für  Elementar (Erz)");
+		const BGOreMod = (BGOre === undefined)? 0 : 2;
+		const BGAir = token.actor.items.find(item => item.name === "Begabung für  Elementar (Luft)");
+		const BGAirMod = (BGAir === undefined)? 0 : 2;
+		const MinorGhosts = token.actor.items.find(item => item.name === "Lästige Mindergeister");
+		const MinorGhostsMod = (MinorGhosts === undefined)? 0 : 6;
+
+	//Sonderfertigkeiten des Helden
+		const MKFire = token.actor.items.find(item => item.name === "Merkmalskenntnis: Elementar (Feuer)");
+		const MKFireMod = (MKFire === undefined)? 0 : (MKFire.system.value === null)? 0 : 2;
+		const MKWater = token.actor.items.find(item => item.name === "Merkmalskenntnis: Elementar (Wasser)");
+		const MKWaterMod = (MKWater === undefined)? 0 : (MKWater.system.value === null)? 0 : 2;
+		const MKHumus = token.actor.items.find(item => item.name === "Merkmalskenntnis: Elementar (Humus)");
+		const MKHumusMod = (MKHumus === undefined)? 0 : (MKHumus.system.value === null)? 0 : 2;
+		const MKIce = token.actor.items.find(item => item.name === "Merkmalskenntnis: Elementar (Eis)");
+		const MKIceMod = (MKIce === undefined)? 0 : (MKIce.system.value === null)? 0 : 2;
+		const MKOre = token.actor.items.find(item => item.name === "Merkmalskenntnis: Elementar (Erz)");
+		const MKOreMod = (MKOre === undefined)? 0 : (MKOre.system.value === null)? 0 : 2;
+		const MKAir = token.actor.items.find(item => item.name === "Merkmalskenntnis: Elementar (Luft)");
+		const MKAirMod = (MKAir === undefined)? 0 : (MKAir.system.value === null)? 0 : 2;
 
 //###############################################################################################################################################################################################################################################
 
@@ -57,9 +90,6 @@ async function main() {
         `+ divFlexEnd	
 	inputDialog += divFlexStart + "eingesetzte AsP <input id='usedAsP'" + divInputNumber  + "0'/>" + divFlexEnd;
 	inputDialog += divFlexStart + `
-            <label for="checkMinorGhosts">Nachteil: Lästige Mindergeister</label><input type="checkbox" id="checkMinorGhosts" name="checkMinorGhosts" style="float:right">
-        `+ divFlexEnd;
-	inputDialog += divFlexStart + `
             <label for="checkNaturalForce">an einem Ort natürlicher elementarer Kraft (Wasserfall, Vulkan, Gletscher...)</label><input type="checkbox" id="checkNaturalForce" name="checkNaturalForce" style="float:right">
         `+ divFlexEnd;
 	inputDialog += divFlexStart + `
@@ -68,15 +98,7 @@ async function main() {
 	inputDialog += divFlexStart + `
             <label for="checkNodix">an einem elementaren Heiligtum oder Kraftlinien-Nodix</label><input type="checkbox" id="checkNodix" name="checkNodix" style="float:right">
         `+ divFlexEnd + hr;		
-	inputDialog += divFlexStart + `
-            <label for="checkAffinity">Affinität zu Elementaren</label><input type="checkbox" id="checkAffinity" name="checkAffinity" style="float:right">
-        `+ divFlexEnd;
-	inputDialog += divFlexStart + `
-            <label for="checkAntiGift">Begabung/Merkmalskenntnis (Gegenelement)</label><input type="checkbox" id="checkAntiGift" name="checkAntiGift" style="float:right">
-        `+ divFlexEnd;
-	inputDialog += divFlexStart + `
-            <label for="checkGift">Begabung/Merkmalskenntnis (gerufenes Element)</label><input type="checkbox" id="checkGift" name="checkGift" style="float:right">
-        `+ divFlexEnd + hr;		
+
 //###############################################################################################################################################################################################################################################	
 
 //Probenwurf
@@ -104,14 +126,6 @@ async function main() {
 		const reduceAsPInput = Number(html.find("#reduceAsP")[0]?.value || 0);			//AsP Kosten einsparen
 		
 		//Checkboxes
-		const checkGiftInput = html.find("#checkGift")[0].checked;						//Begabung/Merkmalskenntnis (gerufenes Element)
-				GiftMod = (checkGiftInput === true)? 2 : 0;								//Zuweisen eines Wertes für aktivierte Checkbox
-		const checkAntiGiftInput = html.find("#checkAntiGift")[0].checked;				//Begabung/Merkmalskenntnis (Gegenelement)
-				AntiGiftMod = (checkAntiGiftInput === true)? 2 : 0;						//Zuweisen eines Wertes für aktivierte Checkbox
-		const checkAffinityInput = html.find("#checkAffinity")[0].checked;				//Affinität zu Elementaren
-				AffinityMod = (checkAffinityInput === true)? 3 : 0;						//Zuweisen eines Wertes für aktivierte Checkbox
-		const checkMinorGhostsInput = html.find("#checkMinorGhosts")[0].checked;		//Nachteil: Lästige Mindergeister
-				MinorGhostsMod = (checkMinorGhostsInput === true)? 6 : 0;				//Zuweisen eines Wertes für aktivierte Checkbox
 		const checkNaturalForceInput = html.find("#checkNaturalForce")[0].checked;		//an einem Ort natürlicher elementarer Kraft (Wasserfall, Vulkan, Gletscher...)
 				NaturalForceMod = (checkNaturalForceInput === true)? 2 : 0;				//Zuweisen eines Wertes für aktivierte Checkbox
 		const checkelementalLineInput = html.find("#checkelementalLine")[0].checked;	//Nachteil: Lästige Mindergeister
@@ -125,6 +139,8 @@ async function main() {
             case 0:
 				Elementargeist = " <b>des Feuers</b>";
 				PrimeElement = " <b>Feuer</b>";
+				GiftMod = Math.max(MKFireMod, BGFireMod);
+				AntiGiftMod = Math.max(MKWaterMod, BGWaterMod);
 				INImod = 1;
 				PAmod = 0;
 				LePmod = 0;
@@ -139,6 +155,8 @@ async function main() {
             case 1:
 				Elementargeist = " <b>des Wassers</b>";
 				PrimeElement = " <b>Wasser</b>";
+				GiftMod = Math.max(MKWaterMod, BGWaterMod);
+				AntiGiftMod = Math.max(MKFireMod, BGFireMod);
 				INImod = 1;
 				PAmod = 1;
 				LePmod = 2;
@@ -153,6 +171,8 @@ async function main() {
             case 2:
 				Elementargeist = " <b>des Humus</b>";
 				PrimeElement = " <b>Humus</b>";
+				GiftMod = Math.max(MKHumusMod, BGHumusMod);
+				AntiGiftMod = Math.max(MKIceMod, BGIceMod);
 				INImod = 0;
 				PAmod = 2;
 				LePmod = 4;
@@ -167,6 +187,8 @@ async function main() {
 			case 3:
 				Elementargeist = " <b>des Eises</b>";
 				PrimeElement = " <b>Eis</b>";
+				GiftMod = Math.max(MKIceMod, BGIceMod);
+				AntiGiftMod = Math.max(MKHumusMod, BGHumusMod);
 				INImod = 0;
 				PAmod = 1;
 				LePmod = 2;
@@ -181,6 +203,8 @@ async function main() {
             case 4:
 				Elementargeist = " <b>des Erzes</b>";
 				PrimeElement = " <b>Erz</b>";
+				GiftMod = Math.max(MKOreMod, BGOreMod);
+				AntiGiftMod = Math.max(MKAirMod, BGAirMod);
 				INImod = 0;
 				PAmod = 1;
 				LePmod = 2;
@@ -195,6 +219,8 @@ async function main() {
             case 5:
 				Elementargeist = " <b>der Luft</b>";
 				PrimeElement = " <b>Luft</b>";
+				GiftMod = Math.max(MKAirMod, BGAirMod);
+				AntiGiftMod = Math.max(MKOreMod, BGOreMod);
 				INImod = 2;
 				PAmod = 1;
 				LePmod = 0;
@@ -423,6 +449,36 @@ async function main() {
 				flavor += "<br> Lebenszeit: " + Lifetime + " " + LifetimeUnit + hr;
 				flavor += ControlOutput + tokenName;
             }
+			flavor += hr + "<u>Vor- und Nachteile</u><br>";
+			if(AffinityMod === 3){
+				flavor += "Affinität zu  Elementaren<br>";
+			}if(BGFireMod === 2){
+				flavor += "Begabung für Elementar (Feuer)<br>";
+			}if(BGWaterMod === 2){
+				flavor += "Merkmalskenntnis: Elementar (Wasser)<br>";
+			}if(BGHumusMod === 2){
+				flavor += "Begabung für Elementar (Humus)<br>";
+			}if(BGIceMod === 2){
+				flavor += "Begabung für Elementar (Eis)<br>";
+			}if(BGOreMod === 2){
+				flavor += "Begabung für Elementar (Erz)<br>";
+			}if(BGAirMod === 2){
+				flavor += "Begabung für Elementar (Luft)<br>";
+			}
+			flavor += "<u>Sonderfertigkeiten</u><br>";
+			if(MKFireMod === 2){
+				flavor += "Merkmalskenntnis: Elementar (Feuer)<br>";
+			}if(MKWaterMod === 2){
+				flavor += "Merkmalskenntnis: Elementar (Wasser)<br>";
+			}if(MKHumusMod === 2){
+				flavor += "Merkmalskenntnis: Elementar (Humus)<br>";
+			}if(MKIceMod === 2){
+				flavor += "Merkmalskenntnis: Elementar (Eis)<br>";
+			}if(MKOreMod === 2){
+				flavor += "Merkmalskenntnis: Elementar (Erz)<br>";
+			}if(MKAirMod === 2){
+				flavor += "Merkmalskenntnis: Elementar (Luft)<br>";
+			}
 			
             roll.toMessage ({
                 flavor: flavor,
