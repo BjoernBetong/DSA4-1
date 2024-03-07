@@ -87,6 +87,7 @@ async function main() {
 			<form action"#">
                  <label for="SelectSkill">Talent:</label>
                  <select name="SelectSkill" id="SelectSkill" style="float:right">
+					<option value="99">--------------Talent auswählen--------------</option>
 					<option value="2">Ansitzjagd (An)</option>
 					<option value="3">Fischen/Angeln (Fi)</option>
                     <option value="1">Hetzjagd (He)</option> 
@@ -102,7 +103,8 @@ async function main() {
             <form action"#">
                  <label for="SelectWeapon">verwendete Waffe:</label>
                  <select name="SelectWeapon" id="SelectWeapon" style="float:right">
-                    <option value="25">keine                                       (-/Fi/-/Kr/Na/-/-/Ti)</option>
+ 					<option value="99">-------------------------Waffe auswählen-------------------------</option>
+					<option value="25">keine                                       (-/Fi/-/Kr/Na/-/-/Ti)</option>
 					<option value="99">----------------------------Armbrüste----------------------------</option>
 					<option value="17">Arbalette, Balläster                          (An/-/-/-/-/Pi/-/-)</option>
 					<option value="23">Arbalone                                      (An/-/-/-/-/Pi/-/-)</option>
@@ -145,6 +147,7 @@ async function main() {
 			<form action"#">
                  <label for="SelectRegion">Region:</label>
                  <select name="SelectRegion" id="SelectRegion" style="float:right">
+					<option value="99">--------------Region auswählen--------------</option>
 					<option value="99">------------------Wälder------------------</option>
                     <option value="5">Dschungel</option>
 					<option value="7">Dschungel (Maraskan)</option>
@@ -261,6 +264,20 @@ async function main() {
 				checkpOKModraw = (checkpOKInput === true)? -1 : 0;						//Zuweisen eines Wertes für aktivierte Checkbox
 		const checkKrautInput = html.find("#checkKraut")[0].checked;					//eine weitere Stunde Kräuter suchen
 				checkKrautModraw = (checkpOKInput === true)? 1.5 : 0;					//Zuweisen eines Wertes für aktivierte Checkbox
+
+    if (TalentInput === 99) {
+        ui.notifications.error("Es wurde kein Talent ausgewählt.");
+        return;
+    };
+    if (WeaponInput === 99) {
+        ui.notifications.error("Es wurde keine Waffe ausgewählt.");
+        return;
+    };
+	if (RegionInput === 99) {
+        ui.notifications.error("Es wurde keine Region ausgewählt.");
+        return;
+    };
+
 
 		switch(KrautInput){
 			case 0:
