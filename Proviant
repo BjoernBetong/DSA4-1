@@ -1,0 +1,134 @@
+// Skript zum Verwalten von Proviat
+
+
+main();
+async function main() {
+
+    //Überprüfe, ob ein Held ausgewählt wurde
+    if (canvas.tokens.controlled.length === 0 || canvas.tokens.controlled.length > 1) {
+        ui.notifications.error("Bitte einen Helden auswählen.");
+        return;
+    };
+    if (game.user.targets.size > 1) {
+        ui.notifications.error("Bitte nur einen Helden anvisieren.");
+        return;
+    };
+    
+	//gewählter Held
+    if(game.user.targets.size === 1){
+        targetActor = game.user.targets.values().next().value.actor;
+        targetName = targetActor.name;
+    }else{
+        targetActor = "";
+        targetName = "";
+	};
+
+//###############################################################################################################################################################################################################################################
+
+	//Name des gewählten Helden
+		const tokenName = token.actor.name;
+
+	//Proviant-Rationen
+		const Proviant = token.actor.system.base.appearance.birthday;
+
+//###############################################################################################################################################################################################################################################
+
+    //allgemeine Dialogoptionen
+		const hr = "<hr>";
+		const divFlexStart = "<div style='display:flex'><span style='flex:1'>";
+		const divFlexEnd = "</span></div>";
+		const divInputNumber = "type='number' style='width:50px;float:right' value='";
+		const divInputBox = "type='checkbox' style='width:70px;float:right' ";
+		const divInputUnchecked = "/>";
+		const divInputChecked = "checked />";
+	
+//###############################################################################################################################################################################################################################################    
+
+	headerDialog = "<h2>Proviant von <i>" + tokenName + "</i></h2>";
+	inputDialog = headerDialog;
+	inputDialog += divFlexStart + "Proviant:<br><i>halbe Rationen bitte als <b>0.5</b> eintragen</i><input id='inputProviant'" + divInputNumber  + "0'/>" + divFlexEnd;
+	inputDialog += "<br>"
+	inputDialog += divFlexStart + `
+			<label for="checkPay">Wird Proviant verbraucht?</label><input type="checkbox" id="checkPay" name="checkPay" style="float:right">
+		`+ divFlexEnd + hr;
+	inputDialog += "<u>Proviant:</u><br>"
+	if(Proviant === 1){
+		inputDialog += "<b>" + Proviant + "</b> Ration<br><br>";
+	}else{
+		inputDialog += "<b>" + Proviant + "</b> Rationen<br><br>";
+	}
+
+//###############################################################################################################################################################################################################################################    
+
+    new Dialog({
+        title: "Proviant",
+        content: inputDialog,
+        buttons: {
+            close: {
+                icon: '<i class="fas fa-times"></i>', label: "Schließen"
+            }, 
+            accept: {
+                icon: '<i class="fas fa-check"></i>', label: "Eintragen", callback: htmlCallback
+            }  
+        },
+        default: "accept",
+        render: () => console.log(),
+        close: () => console.log()
+    }).render(true);
+    
+    async function htmlCallback(html){
+ 
+		const checkPayInput = html.find("#checkPay")[0].checked;
+				Pay = (checkPayInput === true)? -1 : 1;
+		const inputProviantValue = Number(html.find("#inputProviant")[0]?.value || 0);
+		
+		if((Pay === -1) && (inputProviantValue > Proviant)){
+			ui.notifications.error("So viel hast du nicht zu essen.");
+			return;
+		}
+
+		if(Pay === -1){
+			newProviant = Proviant - inputProviantValue;
+		}else{
+			newProviant = Proviant + inputProviantValue;
+		}
+			
+        flavor = "Proviant<br>";
+		if(Pay === -1){
+			flavor += "<b>" + tokenName + "</b> verbraucht: <br>";
+		}else{
+			flavor += "<b>" + tokenName + "</b> bekommt: <br>";
+		}
+		if(inputProviantValue > 0){
+			if(inputProviantValue === 1){
+				flavor += "<b>" + inputProviantValue + "</b> Ration<br>";
+			}else{
+				flavor += "<b>" + inputProviantValue + "</b> Rationen<br>";
+			}
+		}
+		flavor += hr;
+		flavor += "Der aktuelle Vorrat enthält:<br>";
+		if(newProviant === 1){
+			flavor += "<b>" + newProviant + "</b> Ration<br>";
+		}else{
+			flavor += "<b>" + newProviant + "</b> Rationen<br>";
+		}
+		
+		ChatMessage.create({
+			flavor: flavor, 
+			user: game.user._id,
+			blind: true,
+			whisper: game.users.filter(u => u.isGM).map(u => u.id)
+		});
+        updating(newProviant)
+	};
+
+    function updating(newProviant){
+       
+		ProviantUpdate = newProviant;
+
+		token.actor.update({
+			'system.base.appearance.birthday': newProviant,
+		});
+	}
+}
