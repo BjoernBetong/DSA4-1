@@ -64,17 +64,18 @@ async function main() {
 	inputDialog += divFlexStart + "Silber: <input id='inputSilber'" + divInputNumber  + "0'/>" + divFlexEnd;
 	inputDialog += divFlexStart + "Heller: <input id='inputHeller'" + divInputNumber  + "0'/>" + divFlexEnd;
 	inputDialog += divFlexStart + "Kreuzer: <input id='inputKreuzer'" + divInputNumber  + "0'/>" + divFlexEnd + hr;
-	inputDialog += "aktuelle Werte: <br>";
-	inputDialog += XP + " Abenteuerpunkte<br>";
-	inputDialog += Sozialstatus + " SO<br>";
+	inputDialog += "<u>aktuelle Werte: </u><br>";
+	inputDialog += "<b>" + XP + "</b> Abenteuerpunkte<br>";
+	inputDialog += "Sozialstatus: <b>" + Sozialstatus + "</b><br><br>";
+	inputDialog += "<u>aktuelles Vermögen: </u><br>";
 	if(WealthDukaten === 1){
-		inputDialog += WealthDukaten + " Dukate<br>";
+		inputDialog += "<b>" + WealthDukaten + "</b> Dukate<br>";
 	}else{
-		inputDialog += WealthDukaten + " Dukaten<br>";
+		inputDialog += "<b>" + WealthDukaten + "</b> Dukaten<br>";
 	}
-	inputDialog += WealthSilber + " Silber<br>";
-	inputDialog += WealthHeller + " Heller<br>";
-	inputDialog += WealthKreuzer + " Kreuzer";
+	inputDialog += "<b>" + WealthSilber + "</b> Silber<br>";
+	inputDialog += "<b>" + WealthHeller + "</b> Heller<br>";
+	inputDialog += "<b>" + WealthKreuzer + "</b> Kreuzer";
 
 
 //###############################################################################################################################################################################################################################################    
