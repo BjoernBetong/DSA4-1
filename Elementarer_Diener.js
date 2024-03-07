@@ -1,4 +1,5 @@
 //Skript für die Beschwörung von Elementaren (nach WdZ, EG) - nur für Magier
+//Das Makro "Mindergeister" wird benötigt, wenn das Entstehen von Mindergeistern bei Elementaren Zaubern berücksichtigt werden soll
 
 main();
 async function main() {
