@@ -54,7 +54,7 @@ async function main() {
 		const Schleichen = token.actor.items.find(item => item.name === "Schleichen");																												//Suche nach dem Talent "Schleichen"
 		const SchleichenValue = (Schleichen === undefined)? isNaN : (Schleichen.system.value === null)? 0 : Schleichen.system.value;																//Abrufen des TaW des Talents "Schleichen"
 		const Reiten = token.actor.items.find(item => item.name === "Reiten");																														//Suche nach dem Talent "Reiten"
-		const ReitenValue = (Reiten)? isNaN : (Reiten.system.value === null)? 0 : Reiten.system.value;																								//Abrufen des TaW des Talents "Reiten"
+		const ReitenValue = (Reiten === undefined)? isNaN : (Reiten.system.value === null)? 0 : Reiten.system.value;																								//Abrufen des TaW des Talents "Reiten"
 		const Fischen = token.actor.items.find(item => item.name === "Fischen/Angeln");																												//Suche nach dem Talent "Fischen/Angeln"
 		const FischenValue = (Fischen === undefined)? isNaN : (Fischen.system.value === null)? 0 : Fischen.system.value;																			//Abrufen des TaW des Talents "Fischen/Angeln"
 		const Selbstbeherrschung = token.actor.items.find(item => item.name === "Selbstbeherrschung");																								//Suche nach dem Talent "Selbstbeherrschung"
