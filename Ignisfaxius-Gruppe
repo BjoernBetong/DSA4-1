@@ -1,4 +1,4 @@
-//Skript für die das Zaubern
+//Skript für die elementaren Vrianten des Ignifaxius-Zaubers
 
 main();
 async function main() {
@@ -90,7 +90,7 @@ async function main() {
                     <option value="0">Ignifaxius Flammenstrahl</option>
                     <option value="1">Frigifaxius Eisstrahl</option>
                     <option value="2">Archofaxius Erzstrahl</option>
-                    <option value="3" selected>Orcanofaxius Luftstrahl</option>
+                    <option value="3">Orcanofaxius Luftstrahl</option>
                     <option value="4">Aquafaxius Wasserstrahl</option>
                     <option value="5">Humofaxius Erdstrahl</option>
                  </select>
