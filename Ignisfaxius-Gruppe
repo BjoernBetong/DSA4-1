@@ -90,7 +90,7 @@ async function main() {
                     <option value="0">Ignifaxius Flammenstrahl</option>
                     <option value="1">Frigifaxius Eisstrahl</option>
                     <option value="2">Archofaxius Erzstrahl</option>
-                    <option value="3">Orcanofaxius Luftstrahl</option>
+                    <option value="3" selected>Orcanofaxius Luftstrahl</option>
                     <option value="4">Aquafaxius Wasserstrahl</option>
                     <option value="5">Humofaxius Erdstrahl</option>
                  </select>
@@ -507,7 +507,7 @@ async function main() {
 				}if(spellInput === 3){
 					flavor += "Das Opfer erleidet einen Angriff zum <b>Niederwerfen</b><br>";
 					flavor += "KK-Probe um " + Math.ceil((totalDmg/ModDivisionFactor)) + " erschwert<br>";
-					flavor += "Bei Misslingen der KK-Probe wird er um " + Math.round((totalDmg/ModDivisionFactor)) + " Schritt weggeschleudert<br>";
+					flavor += "Bei Misslingen der KK-Probe wird es um " + Math.ceil((totalDmg/ModDivisionFactor)) + " Schritt weggeschleudert<br>";
 					flavor += Math.ceil((totalDmg/ModDivisionFactor));
 						if(Math.ceil((totalDmg/ModDivisionFactor)) > 1){
 							flavor += " Punkte Erschöpfung<br>";
@@ -548,4 +548,4 @@ async function main() {
             );
         });
 	}
-}
+}		   
