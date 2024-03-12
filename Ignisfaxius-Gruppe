@@ -1,0 +1,551 @@
+//Skript für die das Zaubern
+
+main();
+async function main() {
+    //Überprüfe, ob ein Held ausgewählt wurde
+    if (canvas.tokens.controlled.length === 0 || canvas.tokens.controlled.length > 1) {
+        ui.notifications.error("Bitte einen Helden auswählen.");
+        return;
+    };
+    if (game.user.targets.size > 1) {
+        ui.notifications.error("Bitte nur einen Helden anvisieren.");
+        return;
+    };
+    
+	//gewählter Held
+    if(game.user.targets.size === 1){
+        targetActor = game.user.targets.values().next().value.actor;
+        targetName = targetActor.name;
+    }else{
+        targetActor = "";
+        targetName = "";
+	};
+
+	
+	//Abrufen des hinterlegten Würfelsystems
+    const rollMode = game.settings.get('core', 'rollMode');
+
+
+//###############################################################################################################################################################################################################################################
+
+	//Name des gewählten Helden
+		const tokenName = token.actor.name;
+
+	//Eigenschaften des Helden	
+		const courage = token.actor.system.base.basicAttributes.courage.value;																														//Mut				MU
+		const cleverness = token.actor.system.base.basicAttributes.cleverness.value;																												//Klugheit			KL
+		const intuition = token.actor.system.base.basicAttributes.intuition.value;																													//Intuition			IN
+		const charisma = token.actor.system.base.basicAttributes.charisma.value;																													//Charisma			CH
+		const dexterity = token.actor.system.base.basicAttributes.dexterity.value;																													//Fingerfertigkeit	FF
+		const agility = token.actor.system.base.basicAttributes.agility.value;																														//Gewandheit		GE
+		const constitution = token.actor.system.base.basicAttributes.constitution.value;																											//Konstitution		KO
+		const strength = token.actor.system.base.basicAttributes.strength.value;																													//Körperkraft		KK
+		const magicResistance = token.actor.system.base.combatAttributes.passive.magicResistance.value; 																							//Magieresistenz	MR
+		const astralEnergy = token.actor.system.base.resources.astralEnergy.value;																													//Astralenergie		AE
+
+	//Zauber des Helden
+		const Ignifaxius = token.actor.items.find(item => item.name === "Ignifaxius Flammenstrahl");																								//Suche nach dem Zauber "Ignifaxius Flammenstrahl"
+		const IgnifaxiusValue = (Ignifaxius === undefined)? isNaN : (Ignifaxius.system.value === null)? 0 : Ignifaxius.system.value;																//Abrufen des ZfW des Zaubers "Ignifaxius Flammenstrahl"
+		const Frigifaxius = token.actor.items.find(item => item.name === "Frigifaxius Eisstrahl");																									//Suche nach dem Zauber "Frigifaxius Eisstrahl"
+		const FrigifaxiusValue = (Frigifaxius === undefined)? isNaN : (Frigifaxius.system.value === null)? 0 : Frigifaxius.system.value;															//Abrufen des ZfW des Zaubers "Frigifaxius Eisstrahl"
+		const Archofaxius = token.actor.items.find(item => item.name === "Archofaxius Erzstrahl");																									//Suche nach dem Zauber "Archofaxius Erzstrahl"
+		const ArchofaxiusValue = (Archofaxius === undefined)? isNaN : (Archofaxius.system.value === null)? 0 : Archofaxius.system.value;															//Abrufen des ZfW des Zaubers "Archofaxius Erzstrahl"
+		const Orcanofaxius = token.actor.items.find(item => item.name === "Orcanofaxius Luftstrahl");																								//Suche nach dem Zauber "Orcanofaxius Luftstrahl"
+		const OrcanofaxiusValue = (Orcanofaxius === undefined)? isNaN : (Orcanofaxius.system.value === null)? 0 : Orcanofaxius.system.value;														//Abrufen des ZfW des Zaubers "Orcanofaxius Luftstrahl"
+		const Aquafaxius = token.actor.items.find(item => item.name === "Aquafaxius Wasserstrahl");																									//Suche nach dem Zauber "Aquafaxius Wasserstrahl"
+		const AquafaxiusValue = (Aquafaxius === undefined)? isNaN : (Aquafaxius.system.value === null)? 0 : Aquafaxius.system.value;																//Abrufen des ZfW des Zaubers "Aquafaxius Wasserstrahl"
+		const Humofaxius = token.actor.items.find(item => item.name === "Humofaxius Erdstrahl");																									//Suche nach dem Zauber "Humofaxius Erdstrahl"
+		const HumofaxiusValue = (Humofaxius === undefined)? isNaN : (Humofaxius.system.value === null)? 0 : Humofaxius.system.value;																//Abrufen des ZfW des Zaubers "Humofaxius Erdstrahl"
+
+	//Vor- und Nachteile
+
+	//Sonderfertigkeiten des Helden
+		const CheckMage = token.actor.items.find(item => item.name === "Repräsentation: Magier");
+		const CheckMageMod = (CheckMage === undefined)? false : true;
+		const Kraftkontrolle = token.actor.items.find(item => item.name === "Kraftkontrolle");																										//Suche nach der Sonderfertigkeit "Kraftkontrolle"
+		const KraftkontrolleValue = (Kraftkontrolle === undefined)? 0 : (Kraftkontrolle.system.value === null)? 0 : 1;																				//Zuweisen eines Wertes für die Einsparung von Astralenergie
+
+
+//###############################################################################################################################################################################################################################################
+
+    //allgemeine Dialogoptionen
+		const hr = "<hr>";
+		const divFlexStart = "<div style='display:flex'><span style='flex:1'>";
+		const divFlexEnd = "</span></div>";
+		const divInputNumber = "type='number' style='width:50px;float:right' value='";
+		const divInputBox = "type='checkbox' style='width:70px;float:right' ";
+		const divInputUnchecked = "/>";
+		const divInputChecked = "checked />";
+	
+//###############################################################################################################################################################################################################################################    
+
+//Dialoge
+	//Beschwörung des Elementars
+	headerDialog = "<h2><b><i>" + tokenName + "</b></i><br>zaubert einen " + "</h2>";
+    inputDialog = headerDialog;
+    inputDialog += divFlexStart + `
+            <form action"#">
+                 <label for="SelectSpell">Zauber:</label>
+                 <select name="SelectSpell" id="SelectSpell" style="float:right">
+                    <option value="0">Ignifaxius Flammenstrahl</option>
+                    <option value="1">Frigifaxius Eisstrahl</option>
+                    <option value="2">Archofaxius Erzstrahl</option>
+                    <option value="3">Orcanofaxius Luftstrahl</option>
+                    <option value="4">Aquafaxius Wasserstrahl</option>
+                    <option value="5">Humofaxius Erdstrahl</option>
+                 </select>
+            </form>
+        `+ divFlexEnd;
+	inputDialog += divFlexStart + "Anzahl der Schadenswürfel: <input id='NoDmgDice'" + divInputNumber  + "1'/>" + divFlexEnd + "<br>";
+	inputDialog += "<i>max. ZfW minus Modifikator Würfel, überzählige Würfel werden automatisch gelöscht</i>" + hr;
+	inputDialog += "<h3><b>Modifikationen</b><br></h3>";
+    inputDialog += divFlexStart + `
+            <form action"#">
+                 <label for="SelectMod">Zauber:</label>
+                 <select name="SelectMod" id="SelectMod" style="float:right">
+					<option value="0">keine Modifikation</option>
+					<option value="1">Kegel</option>
+					<option value="2">enger Strahl</option>
+					<option value="3">enger Strahl (Ziel: Kopf oder Arm)</option>
+					<option value="4">enger Strahl (Ziel: Bein)</option>
+					<option value="5">enger Strahl (Ziel: Bauch, Brust oder Rücken)</option>
+                    <option value="6">mehrere Ziele</option>
+                    <option value="7">Doppelschuss</option>
+                 </select>
+            </form>
+        `+ divFlexEnd;	
+	inputDialog += "<h3><b>Spontane Modifikationen</b><br></h3>";
+    inputDialog += divFlexStart + `
+            <form action"#">
+                 <label for="reduceAsP">Kosten einsparen (+3 ZfP pro 10 %)</label>
+                 <select name="reduceAsP" id="reduceAsP" style="float:right">
+                    <option value="0">0 %</option>
+                    <option value="1">10 %</option>
+                    <option value="2">20 %</option>
+					<option value="3">30 %</option>
+                    <option value="4">40 %</option>
+                    <option value="5">50 %</option>
+                 </select>
+            </form>
+        `+ divFlexEnd	
+	inputDialog += divFlexStart + `
+            <label for="checkhalfTime">Halbierte Zauberdauer (mindestens 1 Aktion)</label><input type="checkbox" id="checkhalfTime" name="checkhalfTime" style="float:right">
+        `+ divFlexEnd
+	inputDialog += divFlexStart + `
+            <label for="checkdoubledTime">Verdoppelte Zauberdauer (nur einmalig)</label><input type="checkbox" id="checkdoubledTime" name="checkdoubledTime" style="float:right">
+        `+ divFlexEnd;
+		
+//###############################################################################################################################################################################################################################################	
+
+//Probenwurf
+	new Dialog({
+        title: "Zauberprobe",
+        content: inputDialog + hr,
+        buttons: {
+            close: {
+                icon: '<i class="fas fa-times"></i>', label: "Schließen"
+            }, 
+            accept: {
+                icon: '<i class="fas fa-check"></i>', label: "Würfeln", callback: htmlCallback
+            }  
+        },
+		default: "accept",
+        render: () => console.log(),
+        close: () => console.log()
+    }).render(true);
+	
+    async function htmlCallback(html){
+		
+		//Input Boxes
+		const reduceAsPInput = Number(html.find("#reduceAsP")[0]?.value || 0);			//AsP Kosten einsparen
+		const spellInput = Number(html.find("#SelectSpell")[0]?.value || 0);			//Zauber auswählen
+		const ModInput = Number(html.find("#SelectMod")[0]?.value || 0);				//Modifikation auswählen
+		const NoDmgDiceInput = Number(html.find("#NoDmgDice")[0]?.value || 0);			//Anzahl der Schadenswürfel festlegen
+	
+		//Checkboxes
+		const checkhalfTimeInput = html.find("#checkhalfTime")[0].checked;				//Halbierte Zauberdauer (mindestens 1 Aktion)
+				halfTimeMod = (checkhalfTimeInput === true)? 5 : 0;						//Zuweisen eines Wertes für aktivierte Checkbox
+		const checkdoubledTimeInput = html.find("#checkdoubledTime")[0].checked;		//Verdoppelte Zauberdauer (nur einmalig)
+				doubledTimeMod = (checkdoubledTimeInput === true)? 3 : 0;				//Zuweisen eines Wertes für aktivierte Checkbox
+
+		
+		//Dropdown
+		switch(spellInput){
+            case 0:
+				SpellName = "Ignifaxius Flammenstrahl";
+                SpellValue = IgnifaxiusValue;
+				DmgType = " TP <b>Feuer</b>-Schaden";
+				Element = "Flammen";
+				break;
+            case 1:
+				SpellName = "Frigifaxius Eisstrahl";
+                SpellValue = FrigifaxiusValue;
+				DmgType = " TP <b>Kälte</b>-Schaden";
+				Element = "Eis";
+				break;
+            case 2:
+				SpellName = "Archofaxius Erzstrahl";
+                SpellValue = ArchofaxiusValue;
+				DmgType = " TP <b>Erz</b>-Schaden";
+				Element = "Erz";
+				break;
+			case 3:
+				SpellName = "Orcanofaxius Luftstrahl";
+                SpellValue = OrcanofaxiusValue;
+				DmgType = " TP <b>Luft</b>-Schaden";
+				Element = "Sturm";
+				break;
+            case 4:
+				SpellName = "Aquafaxius Wasserstrahl";
+                SpellValue = AquafaxiusValue;
+				DmgType = " TP <b>Wasser</b>-Schaden";
+				Element = "Wasser";
+				break;
+            case 5:
+				SpellName = "Humofaxius Erdstrahl";
+                SpellValue = HumofaxiusValue;
+				DmgType = " TP <b>Humus</b>-Schaden";
+				Element = "Erd";
+				break;
+        }
+		
+		switch(ModInput){
+			case 0:
+				SpellModName = "";
+				SpellMod = 0;
+				ZfWneed = 0;
+				ModOutcome = "";
+				ModDivisionFactor = 10;
+				HitzoneDice = "";
+				Hitzone = "Gesamt-RS";
+				break;
+			case 1:
+				SpellModName = "<b>Kegel</b>";
+				SpellMod = 2;
+				ZfWneed = 11;
+				ModOutcome = "Es entsteht ein " + Element + "kegel mit 2 Schritt Basisbreite<br>";
+				ModDivisionFactor = 5;
+				HitzoneDice = "";
+				Hitzone = "Gesamt-RS";
+				break;			
+			case 2:
+				SpellModName = "<b>enger Strahl</b>";
+				SpellMod = 3;
+				ZfWneed = 11;
+				ModOutcome = "Es entsteht nur ein fingerdicker Flammenstrahl, der keinen Rüstungsschaden, dafür aber pro KO/2–2 SP eine Wunde anrichtet";
+				ModDivisionFactor = 10;
+				HitzoneDice = Math.round(Math.random() * 20) + 1;
+				if(HitzoneDice == 1 || HitzoneDice == 3 || HitzoneDice == 5){
+					Hitzone = "linkes Bein";
+				}if(HitzoneDice == 2 || HitzoneDice == 4 || HitzoneDice == 6){
+					Hitzone = "rechtes Bein";
+				}if(HitzoneDice == 7 || HitzoneDice == 8){
+					Hitzone = "Bauch";
+				}if(HitzoneDice === 9 || HitzoneDice == 11 || HitzoneDice == 13){
+					Hitzone = "linker Arm";
+				}if(HitzoneDice == 10 || HitzoneDice == 12 || HitzoneDice == 14){
+					Hitzone = "rechter Arm";
+				}if(HitzoneDice == 15 || HitzoneDice == 16 || HitzoneDice == 17 || HitzoneDice == 18){
+					Hitzone = "Brust";
+				}if(HitzoneDice == 19 || HitzoneDice == 20){
+					Hitzone = "Kopf";
+				}
+				break;
+			case 3:
+				SpellModName = "<b>enger Strahl</b> - Ziel: Kopf oder Arme";
+				SpellMod = 8;
+				ZfWneed = 11;
+				ModOutcome = "Es entsteht nur ein fingerdicker Flammenstrahl, der keinen Rüstungsschaden, dafür aber pro KO/2–2 SP eine Wunde anrichtet";
+				ModDivisionFactor = 10;
+				HitzoneDice = "";
+				Hitzone = "Kopf oder Arme";
+				break;
+			case 4:
+				SpellModName = "<b>enger Strahl</b> - Ziel: Beine";
+				SpellMod = 7;
+				ZfWneed = 11;
+				ModOutcome = "Es entsteht nur ein fingerdicker Flammenstrahl, der keinen Rüstungsschaden, dafür aber pro KO/2–2 SP eine Wunde anrichtet";
+				ModDivisionFactor = 10;
+				HitzoneDice = "";
+				Hitzone = "Beine";
+				break;				
+			case 5:
+				SpellModName = "<b>enger Strahl</b> - Ziel: Bauch, Brust oder Rücken";
+				SpellMod = 6;
+				ZfWneed = 11;
+				ModOutcome = "Es entsteht nur ein fingerdicker Flammenstrahl, der keinen Rüstungsschaden, dafür aber pro KO/2–2 SP eine Wunde anrichtet";
+				ModDivisionFactor = 10;
+				HitzoneDice = "";
+				Hitzone = "Bauch, Brust oder Rücken";
+				break;
+			case 6:
+				SpellModName = "mehrere Ziele";
+				SpellMod = 5;
+				ZfWneed = 7;
+				ModOutcome = "Strahlen schießen aus beliebig vielen Fingern des Magiers: Die erwürfelten TP können auf bis zu 5 Opfer gleichmäßig verteilt werden<br>";
+				ModDivisionFactor = 10;
+				HitzoneDice = "";
+				Hitzone = "Gesamt-RS";
+				break;
+			case 7:
+				SpellModName = "Doppelschuss";
+				SpellMod = 5;
+				ZfWneed = 11;
+				ModOutcome = "Der Magier kann mit einer Probe und unter Aufwendung einer Zauberdauer gleichzeitig zwei Zauber auf ein und dasselbe Ziel wirken; dazu verwendet er beide Hände<br>";
+				ModDivisionFactor = 10;
+				HitzoneDice = "";
+				Hitzone = "Gesamt-RS";
+				break;
+		}				
+				
+		switch(reduceAsPInput){
+            case 0:
+                reductionFactor = 1;
+				reduceAsPMod = 0;
+				reduceAsPTime = 0;
+				break;
+            case 1:
+				reductionFactor = 0.9;
+				reduceAsPMod = 3;
+				reduceAsPTime = 1;
+				break;
+            case 2:
+				reductionFactor = 0.8;
+				reduceAsPMod = 6;
+				reduceAsPTime = 2;
+				break;
+			case 3:
+				reductionFactor = 0.7;
+				reduceAsPMod = 9;
+				reduceAsPTime = 3;
+				break;
+            case 4:
+				reductionFactor = 0.6;
+				reduceAsPMod = 12;
+				reduceAsPTime = 4;
+				break;
+            case 5:
+				reductionFactor = 0.5;
+				reduceAsPMod = 15;
+				reduceAsPTime = 5;
+				break;
+        }
+		
+		//Spell
+		const ZfW = SpellValue;
+
+	    if(SpellValue === isNaN) {
+			ui.notifications.error("Du beherrscht diesen Spruch nicht.");
+			return;
+		};
+	    if(ZfWneed > SpellValue) {
+			ui.notifications.error("Dein ZfW ist zu niedrig für diese Modifikation");
+			return;
+		};
+
+	//Berechnung der Schadenspunkte
+		//Berechnung der maximalen Anzahl an Schadenswürfeln
+		NumberDmgDiceInputMax = ZfW - SpellMod;
+		if(NoDmgDiceInput > NumberDmgDiceInputMax){
+			NumberDmgDiceInput = NumberDmgDiceInputMax;
+		}else{
+			NumberDmgDiceInput = NoDmgDiceInput;
+		}
+			
+		//Startbedingungen festlegen
+		totalDmg = 0;
+		let ResultDmg;
+		let Dice = [];			//Sortieren der Einzelwürfe
+				
+			//Loop-Start Schadenswürfel
+			for(let i = 0; i < NumberDmgDiceInput; i++){
+				//W6-Wurf
+					if(ModInput === 1){
+						ResultDmg = Math.floor(Math.random() * 6);
+					}else{
+						ResultDmg = Math.floor(Math.random() * 6) + 1;
+					}
+				//Absteigendes Sortieren der Würfel
+					Dice.push(ResultDmg);
+					Dice.sort((a,b) => a - b);
+				//Speichern der einzelnen Würfel
+					console.log(Dice);
+				//Aufsummieren der einzelnen Schadenswürfel
+					totalDmg += ResultDmg;
+			}		
+
+		totalAsPcosts = Math.round((totalDmg - KraftkontrolleValue) * reductionFactor);
+			if(totalAsPcosts < astralEnergy){
+		//Einschränkung, dass der Zauber nicht mehr AsP kosten kann, als dem Helden derzeit zur Verfügung stehen.
+				AsPcosts = totalAsPcosts;
+			}else{
+				AsPcosts = astralEnergy;
+			}
+
+		if(checkMageMod = true){
+			mod = - (doubledTimeMod + 1) + Math.round((halfTimeMod + reduceAsPMod)/2) + SpellMod
+		}else{
+			mod = - doubledTimeMod + halfTimeMod + reduceAsPMod + SpellMod
+		}
+		modOutput = (mod >=0)? "+" + mod: mod;
+
+		//Roll the dice
+        let spellRoll = new Roll("3d20").roll({async: true});
+        spellRoll.then(roll =>{
+			let w1 = roll.terms[0].results[0].result;
+			let w2 = roll.terms[0].results[1].result;
+			let w3 = roll.terms[0].results[2].result;
+
+
+			eZfW = ZfW;
+			eZfWMod = eZfW - mod;
+			resOne = cleverness - w1;
+			resOne += (eZfWMod < 0)? eZfWMod: 0;
+			resTwo = dexterity - w2;
+			resTwo += (eZfWMod < 0)? eZfWMod: 0;
+			resThree = constitution - w3;
+			resThree += (eZfWMod < 0)? eZfWMod: 0;
+			spellResult = (eZfWMod > 0)? eZfWMod : 0;
+			spellResult += (resOne < 0)? resOne : 0;
+			spellResult += (resTwo < 0)? resTwo : 0;
+			spellResult += (resThree < 0)? resThree : 0;
+			spellResult = (spellResult == 0)? 1 : spellResult;
+			spellResult = Math.min(spellResult,eZfW);
+
+            luck = (spellResult >= 0)? "Erfolg":"Misserfolg";
+            wSum1 = w1 + w2
+            wSum2 = w1 + w3
+            wSum3 = w2 + w3
+            wSum4 = w1 + w2 + w3
+            if(wSum1 == 2 || wSum2 == 2 || wSum3 == 2){
+                if(wSum4 == 3){
+                    luck = "Spektakulärer Erfolg";
+                }else{
+                    luck = "Glücklicher Erfolg";
+                };
+            };
+            if(wSum1 == 40 || wSum2 == 40 || wSum3 == 40){
+                if(wSum4 == 60){
+                    luck = "Spektakulärer Patzer";
+                }else{
+                    luck = "Patzer";
+                };
+            };
+
+			//Berechnung der Zauberdauer
+				if(halfTimeMod === 5){
+					RedTimeMod = 0.5;
+				}else{
+					RedTimeMod = 1;
+				}
+				
+				if(doubledTimeMod === 3){
+					ddTimeMod = 2;
+				}else{
+					ddTimeMod = 1;
+				}
+				
+				TimeA = 4;
+				totalTime = ((TimeA + reduceAsPTime) * RedTimeMod * ddTimeMod)
+				
+			if(spellResult < 0 || ((totalAsPcosts > astralEnergy) && (SpellValue < 11))){
+				aspUpdate = astralEnergy - (totalAsPcosts/2);
+				token.actor.update({'system.base.resources.astralEnergy.value':aspUpdate});
+				Time = Math.round(totalTime/2);
+			}else{
+				aspUpdate = astralEnergy - AsPcosts;
+				token.actor.update({'system.base.resources.astralEnergy.value':aspUpdate});
+				Time = Math.round(totalTime);
+			}
+
+			//Chat Output
+            flavor = "<b>" + SpellName + "</b>";
+			if(ModInput > 0){
+				flavor += " (" + SpellModName + ")>br>";
+				flavor += ModOutcome;
+			}
+			flavor += "<br>KL: " + w1 + " / " + "<b>" + cleverness + "</b>" + " (" + resOne + ")";
+			flavor += "<br>FF: " + w2 + " / " + "<b>" + dexterity + "</b>" + " (" + resTwo + ")";
+			flavor += "<br>KO: " + w3 + " / " + "<b>" + constitution + "</b>" + " (" + resThree + ")";
+            flavor += "<br>ZfW / Modifikation: " + eZfW + " / " + modOutput;
+            flavor += "<br>ZfW*: " + spellResult + " (" + luck + ")";
+			flavor += "<br>Kosten: " + AsPcosts + " AsP";
+			flavor += "<br>Dauer: " + Time + " Aktionen";
+			flavor += "<br>" + hr;
+			if(spellResult > 0){
+				flavor += "<b>Schaden: </b>" + totalDmg + DmgType + ", <br><b>Trefferzone</b>: " + Hitzone + "<br>";
+				if(ModInput == 2 || ModInput == 3 || ModInput == 4 || ModInput == 5){
+				}else{
+					if((Math.round((totalDmg/ModDivisionFactor))) > 0){
+						flavor += "<b>weitere Effekte</b>: Der gegnerische RS sinkt um " + Math.round((totalDmg/ModDivisionFactor));
+						if((Math.round((totalDmg/ModDivisionFactor))) > 1){
+							flavor += " Punkte<br>";
+						}else{
+							flavor += " Punkt<br>";
+						}
+					}
+				}
+				flavor += "<b>Schadenswürfel</b>:" + Dice + hr;
+				flavor += "<b>Sekundärer Elementar-Schaden: </b><br>";
+				if(spellInput === 0){
+					flavor += "Der gegnerischer RS sinkt noch zusätzlich um " + Math.ceil((totalDmg/ModDivisionFactor)) + "<br>";
+					flavor += "Feuerschaden kann leicht entzündliche Materialien entflammen";
+				}if(spellInput === 1){
+					flavor += "Das Opfer erleidet " + Math.ceil((totalDmg/ModDivisionFactor));
+						if(Math.ceil((totalDmg/ModDivisionFactor)) > 1){
+							flavor += " Punkte Erschöpfung<br>";
+						}else{
+							flavor += " Punkt Erschöpfung<br>";
+						}
+					flavor += "Der Bruchfaktor getroffener hölzerner Waffen oder hölzerner und lederner Schilde steigt für " + totalDmg + " KR um 10, der metallener Waffen/Schilde um 2 Punkte<br>";
+					flavor += "Bei Objekten ohne BF: Verminderungen des Strukturwerts um 10 Punkte bei hölzernen oder ledernen Objekten, um 5 Punkten bei steinernen Objekten, um 2 Punkte bei metallenen Objekten<br>";
+					flavor += "Flaschen mit Flüssigkeiten können platzen, schockgefrorene Flüssigkeiten allgemein verderben";
+				}if(spellInput === 2){
+					flavor += "Das Opfer erleidet einen Angriff zum <b>Niederwerfen</b><br>";
+					flavor += "KK-Probe um " + Math.ceil((totalDmg/(ModDivisionFactor/2))) + " erschwert<br>";
+					flavor += "Die Wundschwelle ist um 2 Punkte reduziert";
+				}if(spellInput === 3){
+					flavor += "Das Opfer erleidet einen Angriff zum <b>Niederwerfen</b><br>";
+					flavor += "KK-Probe um " + Math.ceil((totalDmg/ModDivisionFactor)) + " erschwert<br>";
+					flavor += "Bei Misslingen der KK-Probe wird er um " + Math.round((totalDmg/ModDivisionFactor)) + " Schritt weggeschleudert<br>";
+					flavor += Math.ceil((totalDmg/ModDivisionFactor));
+						if(Math.ceil((totalDmg/ModDivisionFactor)) > 1){
+							flavor += " Punkte Erschöpfung<br>";
+						}else{
+							flavor += " Punkt Erschöpfung<br>";
+						}
+					flavor += "Ein elementarer Luftstoß kann kleinere Flammen auslöschen und größere Feuer anfachen. Zudem kann er Gegenstände umherwirbeln";
+				}if(spellInput === 4){
+					flavor += "Das Opfer erleidet einen Angriff zum <b>Niederwerfen</b><br>";
+					flavor += "KK-Probe um " + Math.ceil((totalDmg/ModDivisionFactor)) + " erschwert<br>";
+					flavor += "KO-Probe um " + Math.ceil((totalDmg/ModDivisionFactor)) + " erschwert:<br>";
+					flavor += "Bei Misslingen hat das Opfer Wasser in der Lunge und ist " + spellResult + " KR lang kampfunfähig und verliert ebenso viele AuP wie LeP durch diesen Zauber";
+				}if(spellInput === 5){
+					flavor += "Alle körperlichen Eigenschaften des Gegners sinken um " + Math.ceil((totalDmg/ModDivisionFactor));
+						if(Math.ceil((totalDmg/ModDivisionFactor)) > 1){
+							flavor += " Punkte <br>";
+						}else{
+							flavor += " Punkt <br>";
+						}
+					flavor += "für " + spellResult + " SR";
+				}
+				flavor += hr;
+				if(ModInput === 1){
+					flavor += "Der Gegner hat die Möglichkeit den Schaden mit einer um 10 erschwerten <i>Ausweichen</i>-Probe zu reduzieren:<br>"
+				}else{
+					flavor += "Der Gegner hat die Möglichkeit den Schaden mit einer um 5 erschwerten <i>Ausweichen</i>-Probe zu reduzieren:<br>"
+				}
+				flavor += "Pro Punkt <i>Ausweichen</i> wird ein Würfel (aufsteigend) ignoriert<br>"
+			}else{
+				flavor += "Der Zauber misslingt";
+			}
+            
+            roll.toMessage ({
+                flavor: flavor,
+                speaker: ChatMessage.getSpeaker({token: token.document})
+            },
+            {rollMode}
+            );
+        });
+	}
+}
