@@ -486,9 +486,9 @@ async function main() {
 				flavor += "<b>Schaden: </b>" + totalDmg + DmgType + ", <br><b>Trefferzone</b>: " + Hitzone + "<br>";
 				if(ModInput == 2 || ModInput == 3 || ModInput == 4 || ModInput == 5){
 				}else{
-					if((Math.round((totalDmg/ModDivisionFactor))) > 0){
-						flavor += "<b>weitere Effekte</b>: Der gegnerische RS sinkt um " + Math.round((totalDmg/ModDivisionFactor));
-						if((Math.round((totalDmg/ModDivisionFactor))) > 1){
+					if((Math.floor((totalDmg/ModDivisionFactor))) > 0){
+						flavor += "<b>weitere Effekte</b>: Der gegnerische RS sinkt um " + Math.floor((totalDmg/ModDivisionFactor));
+						if((Math.floor((totalDmg/ModDivisionFactor))) > 1){
 							flavor += " Punkte<br>";
 						}else{
 							flavor += " Punkt<br>";
@@ -498,11 +498,11 @@ async function main() {
 				flavor += "<b>Schadenswürfel</b>:" + Dice + hr;
 				flavor += "<b>Sekundärer Elementar-Schaden: </b><br>";
 				if(spellInput === 0){
-					flavor += "Der gegnerischer RS sinkt noch zusätzlich um " + Math.ceil((totalDmg/ModDivisionFactor)) + "<br>";
+					flavor += "Der gegnerischer RS sinkt noch zusätzlich um " + Math.floor((totalDmg/ModDivisionFactor)) + "<br>";
 					flavor += "Feuerschaden kann leicht entzündliche Materialien entflammen";
 				}if(spellInput === 1){
-					flavor += "Das Opfer erleidet " + Math.ceil((totalDmg/ModDivisionFactor));
-						if(Math.ceil((totalDmg/ModDivisionFactor)) > 1){
+					flavor += "Das Opfer erleidet " + Math.floor((totalDmg/ModDivisionFactor));
+						if(Math.floor((totalDmg/ModDivisionFactor)) > 1){
 							flavor += " Punkte Erschöpfung<br>";
 						}else{
 							flavor += " Punkt Erschöpfung<br>";
@@ -512,14 +512,14 @@ async function main() {
 					flavor += "Flaschen mit Flüssigkeiten können platzen, schockgefrorene Flüssigkeiten allgemein verderben";
 				}if(spellInput === 2){
 					flavor += "Das Opfer erleidet einen Angriff zum <b>Niederwerfen</b><br>";
-					flavor += "KK-Probe um " + Math.ceil((totalDmg/(ModDivisionFactor/2))) + " erschwert<br>";
+					flavor += "KK-Probe um " + Math.floor((totalDmg/(ModDivisionFactor/2))) + " erschwert<br>";
 					flavor += "Die Wundschwelle ist um 2 Punkte reduziert";
 				}if(spellInput === 3){
 					flavor += "Das Opfer erleidet einen Angriff zum <b>Niederwerfen</b><br>";
-					flavor += "KK-Probe um " + Math.ceil((totalDmg/ModDivisionFactor)) + " erschwert<br>";
-					flavor += "Bei Misslingen der KK-Probe wird es um " + Math.ceil((totalDmg/ModDivisionFactor)) + " Schritt weggeschleudert<br>";
-					flavor += Math.ceil((totalDmg/ModDivisionFactor));
-						if(Math.ceil((totalDmg/ModDivisionFactor)) > 1){
+					flavor += "KK-Probe um " + Math.floor((totalDmg/ModDivisionFactor)) + " erschwert<br>";
+					flavor += "Bei Misslingen der KK-Probe wird es um " + Math.floor((totalDmg/ModDivisionFactor)) + " Schritt weggeschleudert<br>";
+					flavor += Math.floor((totalDmg/ModDivisionFactor));
+						if(Math.floor((totalDmg/ModDivisionFactor)) > 1){
 							flavor += " Punkte Erschöpfung<br>";
 						}else{
 							flavor += " Punkt Erschöpfung<br>";
@@ -527,8 +527,8 @@ async function main() {
 					flavor += "Ein elementarer Luftstoß kann kleinere Flammen auslöschen und größere Feuer anfachen. Zudem kann er Gegenstände umherwirbeln";
 				}if(spellInput === 4){
 					flavor += "Das Opfer erleidet einen Angriff zum <b>Niederwerfen</b><br>";
-					flavor += "KK-Probe um " + Math.ceil((totalDmg/ModDivisionFactor)) + " erschwert<br>";
-					flavor += "KO-Probe um " + Math.ceil((totalDmg/ModDivisionFactor)) + " erschwert:<br>";
+					flavor += "KK-Probe um " + Math.floor((totalDmg/ModDivisionFactor)) + " erschwert<br>";
+					flavor += "KO-Probe um " + Math.floor((totalDmg/ModDivisionFactor)) + " erschwert:<br>";
 					flavor += "Bei Misslingen hat das Opfer Wasser in der Lunge und ist " + spellResult + " KR lang kampfunfähig und verliert ebenso viele AuP wie LeP durch diesen Zauber";
 				}if(spellInput === 5){
 					flavor += "Alle körperlichen Eigenschaften des Gegners sinken um " + Math.ceil((totalDmg/ModDivisionFactor));
