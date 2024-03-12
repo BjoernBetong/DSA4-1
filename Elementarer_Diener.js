@@ -343,8 +343,15 @@ async function main() {
 		
 			fail = " misslingt der Zauber";
             win = " beschwört einen <b>Elementargeist</b>";
-			AsPcosts = Math.round((12 - KraftkontrolleValue) * reductionFactor); 
-
+		
+		totalAsPcosts = Math.round((12 - KraftkontrolleValue) * reductionFactor); 
+		//Einschränkung, dass der Zauber nicht mehr AsP kosten kann, als dem Helden derzeit zur Verfügung stehen.
+			if(totalAsPcosts < astralEnergy){
+				AsPcosts = totalAsPcosts;
+			}else{
+				AsPcosts = astralEnergy;
+			}
+			
 			if(checkMageMod = true){
 				mod = summonDiffMod - trueNameMod - ElementaristValue - GiftMod + AntiGiftMod - (doubledTimeMod + 1) + Math.round((halfTimeMod + reduceAsPMod)/2) + Purityfactor - GarmentMod
 			}else{
@@ -406,15 +413,19 @@ async function main() {
 					winControl = " und kann diesen kontrollieren";
 
 			//Berechnung der Zauberdauer (1 Aktion entsprechen 1,5 Sekunden / 1 Spielrunde entsprechen 5 Minuten (200 Aktionen))
-				if(checkhalfTimeInput > 0){
-					TimeMod = 0.5;
-				}if(checkdoubledTimeInput > 0){
-					TimeMod = 2;
+				if(halfTimeMod === 5){
+					RedTimeMod = 0.5;
 				}else{
-					TimeMod = 1;
+					RedTimeMod = 1;
+				}
+				
+				if(doubledTimeMod === 3){
+					ddTimeMod = 2;
+				}else{
+					ddTimeMod = 1;
 				}
 				TimeA = 200;
-				Time = (TimeA + reduceAsPTime) * TimeMod;
+				Time = (TimeA + reduceAsPTime) * RedTimeMod * ddTimeMod;
 				TimeSR = Time/200;
 					if(TimeSR === 1){
 						SROutput = " Spielrunde";
@@ -422,9 +433,9 @@ async function main() {
 						SROutput = " Spielrunden";
 					}
 
-			if(spellResult < 0){
+			if(spellResult < 0 || (totalAsPcosts > astralEnergy)){
 				failOut = fail;
-				aspUpdate = astralEnergy - (AsPcosts/2);
+				aspUpdate = astralEnergy - (totalAsPcosts/2);
 				token.actor.update({'system.base.resources.astralEnergy.value':aspUpdate});
 			}if(spellResult > 0, resFour > eControl){
 				failOut = win + Elementargeist + failControl;
