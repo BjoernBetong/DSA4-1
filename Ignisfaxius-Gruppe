@@ -90,7 +90,7 @@ async function main() {
                     <option value="0">Ignifaxius Flammenstrahl</option>
                     <option value="1">Frigifaxius Eisstrahl</option>
                     <option value="2">Archofaxius Erzstrahl</option>
-                    <option value="3">Orcanofaxius Luftstrahl</option>
+                    <option value="3" selected>Orcanofaxius Luftstrahl</option>
                     <option value="4">Aquafaxius Wasserstrahl</option>
                     <option value="5">Humofaxius Erdstrahl</option>
                  </select>
@@ -383,7 +383,11 @@ async function main() {
 			}
 
 		if(checkMageMod = true){
-			mod = - (doubledTimeMod + 1) + Math.round((halfTimeMod + reduceAsPMod)/2) + SpellMod
+			if(doubledTimeMod === 0){
+				mod = - doubledTimeMod + Math.round((halfTimeMod + reduceAsPMod)/2) + SpellMod
+			}else{
+				- (doubledTimeMod + 1) + Math.round((halfTimeMod + reduceAsPMod)/2) + SpellMod
+			}
 		}else{
 			mod = - doubledTimeMod + halfTimeMod + reduceAsPMod + SpellMod
 		}
@@ -448,8 +452,12 @@ async function main() {
 				TimeA = 4;
 				totalTime = ((TimeA + reduceAsPTime) * RedTimeMod * ddTimeMod)
 				
-			if(spellResult < 0 || ((totalAsPcosts > astralEnergy) && (SpellValue < 11))){
-				aspUpdate = astralEnergy - (totalAsPcosts/2);
+			if(spellResult < 0){
+				aspUpdate = astralEnergy - Math.round(totalAsPcosts/2);
+				token.actor.update({'system.base.resources.astralEnergy.value':aspUpdate});
+				Time = Math.round(totalTime/2);
+			}if((totalAsPcosts > astralEnergy) && (SpellValue < 11)){
+				aspUpdate = 0;
 				token.actor.update({'system.base.resources.astralEnergy.value':aspUpdate});
 				Time = Math.round(totalTime/2);
 			}else{
@@ -472,7 +480,9 @@ async function main() {
 			flavor += "<br>Kosten: " + AsPcosts + " AsP";
 			flavor += "<br>Dauer: " + Time + " Aktionen";
 			flavor += "<br>" + hr;
-			if(spellResult > 0){
+			if((spellResult < 0) || ((totalAsPcosts > astralEnergy) && (SpellValue < 11))){
+				flavor += "Der Zauber misslingt";
+			}else{
 				flavor += "<b>Schaden: </b>" + totalDmg + DmgType + ", <br><b>Trefferzone</b>: " + Hitzone + "<br>";
 				if(ModInput == 2 || ModInput == 3 || ModInput == 4 || ModInput == 5){
 				}else{
@@ -536,8 +546,6 @@ async function main() {
 					flavor += "Der Gegner hat die Möglichkeit den Schaden mit einer um 5 erschwerten <i>Ausweichen</i>-Probe zu reduzieren:<br>"
 				}
 				flavor += "Pro Punkt <i>Ausweichen</i> wird ein Würfel (aufsteigend) ignoriert<br>"
-			}else{
-				flavor += "Der Zauber misslingt";
 			}
             
             roll.toMessage ({
