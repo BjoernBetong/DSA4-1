@@ -84,7 +84,7 @@ async function main() {
                     <option value="2">des Humus</option>
 					<option value="3">des Eises</option>
                     <option value="4">des Erzes </option>
-                    <option value="5">der Luft</option>
+                    <option value="5" selected>der Luft</option>
                  </select>
             </form>
         `+ divFlexEnd	
@@ -120,12 +120,12 @@ async function main() {
 	
     async function htmlCallback(html){
 		
-		//Input Boxes
+	//Input Boxes
 		const elementInput = Number(html.find("#SelectElement")[0]?.value || 0);		//Auswahl des Elements
 		const AsPcosts = Number(html.find("#usedAsP")[0]?.value || 0);					//eingesetzte AsP
 		const reduceAsPInput = Number(html.find("#reduceAsP")[0]?.value || 0);			//AsP Kosten einsparen
 		
-		//Checkboxes
+	//Checkboxes
 		const checkNaturalForceInput = html.find("#checkNaturalForce")[0].checked;		//an einem Ort natürlicher elementarer Kraft (Wasserfall, Vulkan, Gletscher...)
 				NaturalForceMod = (checkNaturalForceInput === true)? 2 : 0;				//Zuweisen eines Wertes für aktivierte Checkbox
 		const checkelementalLineInput = html.find("#checkelementalLine")[0].checked;	//Nachteil: Lästige Mindergeister
@@ -134,7 +134,7 @@ async function main() {
 				checkNodixMod = (checkNodixInput === true)? 6 : 0;						//Zuweisen eines Wertes für aktivierte Checkbox
 
 		
-		//Dropdown
+	//Dropdown
 		switch(elementInput){
             case 0:
 				Elementargeist = " <b>des Feuers</b>";
@@ -230,7 +230,7 @@ async function main() {
 				GSmod = 2;
 				MRmod = 0;
 				GWmod = 1;
-				addAtribute1 = "<b>1</b> Attribut aus der Liste: <br>Angriff mit Luft (2W6 TP, 3 Schritt),Aura (Wind), Durch Luft gehen, Luft-Griff/Biss, Formlosigkeit I, Formlosigkeit II, Langer Arm, Nebel, Rauch, Regeneration I";
+				addAtribute1 = "<b>1</b> Attribut aus der Liste: <br>Angriff mit Luft (2W6 TP, 3 Schritt), Aura (Wind), Durch Luft gehen, Luft-Griff/Biss, Formlosigkeit I, Formlosigkeit II, Langer Arm, Nebel, Rauch, Regeneration I";
 				break;
         }
 		//Basiswerte eines elementaren Mindergeistes
@@ -245,7 +245,7 @@ async function main() {
 				GWbasis = 6;
 
 
-		//Roll the dice
+	//Roll the dice
         let spellRoll = new Roll("2d20").roll({async: true});
         spellRoll.then(roll =>{
 			let w1 = roll.terms[0].results[0].result;
@@ -260,7 +260,7 @@ async function main() {
 			let w4 = roll.total;
 
 
-			//Berechnung der Stärke des Mindergeistes
+		//Berechnung der Stärke des Mindergeistes
 			StrengthMinorGhostRoll = w4 + Math.round(AsPcosts/12) + (NaturalForceMod/2) + (checkelementalLineMod*2/3) + (checkNodixMod/2)
 			if(StrengthMinorGhostRoll < 1){
 				StrengthMinorGhost = 1;
@@ -268,7 +268,7 @@ async function main() {
 				StrengthMinorGhost = StrengthMinorGhostRoll;
 			}
 
-			//Auswahl des Sekundärelements
+		//Auswahl des Sekundärelements
 			if(w3 === 1){
 				SecElement = " <b>Feuer</b>";
 				INImod2 = 1;
@@ -344,11 +344,16 @@ async function main() {
 
 			}
 		
-			//Berechnung der Wahrscheinlichkeit, ob ein Mindergeist ensteht
+		//Berechnung der Wahrscheinlichkeit, ob ein Mindergeist ensteht
 			ProbMinorGhost = w1 + Math.round(AsPcosts/6) + MinorGhostsMod + NaturalForceMod + checkelementalLineMod + checkNodixMod
 				failMinorGhost = "Kein Mindergeist erscheint";
-				winMinorGhost = "Ein Mindergeist, bestehend aus " + PrimeElement + " und " + SecElement + " der Stärke " + StrengthMinorGhost + " erscheint";
-			
+				if(SecElement === PrimeElement){
+					winMinorGhost2 = " der Stärke <b>" + StrengthMinorGhost + "</b> erscheint";
+				}else{
+					winMinorGhost2 = " und" + SecElement + " der Stärke <b>" + StrengthMinorGhost + "</b> erscheint";
+				}
+				winMinorGhost = "Ein Mindergeist, bestehend aus " + PrimeElement + winMinorGhost2
+				
 			//Berechnung der Wertes
 				INI = INIbasis + Math.round(INImod * StrengthMinorGhost/2) + Math.round(INImod2 * StrengthMinorGhost/2);	
 				PA = PAbasis + Math.round(PAmod * StrengthMinorGhost/2) + Math.round(PAmod2 * StrengthMinorGhost/2);
@@ -379,6 +384,7 @@ async function main() {
 					Lifetime = ProbMinorGhost * 3;
 					addAtributesNo = "";
 					addAtribute3 = "";
+					Grade = 1;
 			}if((PrimeElement === " <b>Feuer</b>" && (SecElement === " <b>Humus</b>" || SecElement === " <b>Erz</b>")) 
 				|| (PrimeElement === " <b>Wasser</b>" && (SecElement === " <b>Eis</b>" || SecElement === " <b>Luft</b>")) 
 				|| (PrimeElement === " <b>Humus</b>" && (SecElement === " <b>Feuer</b>" || SecElement === " <b>Erz</b>")) 
@@ -389,6 +395,7 @@ async function main() {
 					Lifetime = ProbMinorGhost * 2;
 					addAtributesNo = "";
 					addAtribute3 = "";
+					Grade = 2;
 			}if((PrimeElement === " <b>Feuer</b>" && (SecElement === " <b>Eis</b>" || SecElement === " <b>Luft</b>")) 
 				|| (PrimeElement === " <b>Wasser</b>" && (SecElement === " <b>Humus</b>" || SecElement === " <b>Erz</b>")) 
 				|| (PrimeElement === " <b>Humus</b>" && (SecElement === " <b>Erz</b>" || SecElement === " <b>Wasser</b>")) 
@@ -399,6 +406,7 @@ async function main() {
 					Lifetime = ProbMinorGhost;
 					addAtributesNo = "";
 					addAtribute3 = "";
+					Grade = 3;
 			}if((PrimeElement === " <b>Feuer</b>" && SecElement === " <b>Wasser</b>") 
 				|| (PrimeElement === " <b>Wasser</b>" && SecElement === " <b>Feuer</b>") 
 				|| (PrimeElement === " <b>Humus</b>" && SecElement === " <b>Eis</b>") 
@@ -408,7 +416,8 @@ async function main() {
 					GhostClass = "Geister vierter Ordnung (auch: Furchtgeister oder Animus minor contrarius) bestehen aus zwei entgegengesetzten Elementen";
 					Lifetime = ProbMinorGhost / 2;
 					addAtributesNo = Math.round(StrengthMinorGhost/3);
-					addAtribute3 = "Mindergeister vierter Ordnung erhalten <b>" +  addAtributesNo + "</b> der folgenden Eigenschaften: Schreckgestalt I, Ängste auslösen (Aberglaube oder je nach Element: Angst vor Feuer, Meeresangst für Wasser, Raumangst für Erz, Höhenangst für Luft, Totenangst für Eis oder Humus), Gestank, Lebensraub I, Raserei";
+					addAtribute3 = "<br><h2>Furchtgeister</h2>Mindergeister vierter Ordnung sind <b>sehr aggressiv</b> und erhalten <b>" +  addAtributesNo + "</b> der folgenden Eigenschaften: Schreckgestalt I, Ängste auslösen (Aberglaube oder je nach Element: Angst vor Feuer, Meeresangst für Wasser, Raumangst für Erz, Höhenangst für Luft, Totenangst für Eis oder Humus), Gestank, Lebensraub I, Raserei";
+					Grade = 4;
 			}		
 			
 			
@@ -418,21 +427,21 @@ async function main() {
 				failOut = winMinorGhost;
 			}
 
-			//Berechnung des Kontrollwertes
+		//Berechnung des Kontrollwertes
 			Control = Math.round((courage + intuition + charisma + charisma)/4)	
 				eControl = Control + AffinityMod + GiftMod - (AntiGiftMod * 2);
-			if(w2 < eControl){
-				ControlOutput = " Der Mindergeist umspielt ";
-			}if(w2 === 20){
-				ControlOutput = " Der Mindergeist attakiert ";
-			}else{
-				ControlOutput = "Der Mindergeist stört (alle Proben +1) ";
+			if(w2 < (eControl + 1)){
+				ControlOutput = " und umspielt (<i>kein Einfluss</i>) ";
+			}if(w2 == 20 || (Grade == 4 && w2 > eControl)){
+				ControlOutput = " und <u>attakiert</u> ";
+			}if(w2 > eControl){
+				ControlOutput = " und stört (<i>alle Proben +1</i>) ";
 			}
 
 		//Chat Output
             flavor = "<b> Entstehung von Mindergeistern </b><br>";
-			flavor += "<b> Wurf: </b>" + ProbMinorGhost + " / " + StrengthMinorGhost + hr;
-			flavor += failOut + "<br>";
+//			flavor += "<b> Wurf: </b>" + ProbMinorGhost + " / " + StrengthMinorGhost + " / " + w2 + " / " + eControl + hr;		//Nur Kontrolle im Chatoutput
+			flavor += failOut + ControlOutput + "<b>" + tokenName + "</b><br>";
 			if(ProbMinorGhost > 14){
 				flavor += hr + "<b>Werte des Mindergeistes:</b>";
 				flavor += "<br><b> INI: </b>1W6 + </b>" + INI;
@@ -447,38 +456,38 @@ async function main() {
 				flavor += "<br>" + GhostClass;
 				flavor += "<br>" + addAtribute1 + "<br>" + addAtribute2 + "<br>" + addAtribute3;
 				flavor += "<br> Lebenszeit: " + Lifetime + " " + LifetimeUnit + hr;
-				flavor += ControlOutput + tokenName;
+
             }
-			flavor += hr + "<u>Vor- und Nachteile</u><br>";
-			if(AffinityMod === 3){
-				flavor += "Affinität zu  Elementaren<br>";
-			}if(BGFireMod === 2){
-				flavor += "Begabung für Elementar (Feuer)<br>";
-			}if(BGWaterMod === 2){
-				flavor += "Merkmalskenntnis: Elementar (Wasser)<br>";
-			}if(BGHumusMod === 2){
-				flavor += "Begabung für Elementar (Humus)<br>";
-			}if(BGIceMod === 2){
-				flavor += "Begabung für Elementar (Eis)<br>";
-			}if(BGOreMod === 2){
-				flavor += "Begabung für Elementar (Erz)<br>";
-			}if(BGAirMod === 2){
-				flavor += "Begabung für Elementar (Luft)<br>";
-			}
-			flavor += "<u>Sonderfertigkeiten</u><br>";
-			if(MKFireMod === 2){
-				flavor += "Merkmalskenntnis: Elementar (Feuer)<br>";
-			}if(MKWaterMod === 2){
-				flavor += "Merkmalskenntnis: Elementar (Wasser)<br>";
-			}if(MKHumusMod === 2){
-				flavor += "Merkmalskenntnis: Elementar (Humus)<br>";
-			}if(MKIceMod === 2){
-				flavor += "Merkmalskenntnis: Elementar (Eis)<br>";
-			}if(MKOreMod === 2){
-				flavor += "Merkmalskenntnis: Elementar (Erz)<br>";
-			}if(MKAirMod === 2){
-				flavor += "Merkmalskenntnis: Elementar (Luft)<br>";
-			}
+//			flavor += hr + "<u>Vor- und Nachteile</u><br>";				//Kontrolle, ob die Vor- und Nachteile erkannt werden
+//			if(AffinityMod === 3){
+//				flavor += "Affinität zu  Elementaren<br>";
+//			}if(BGFireMod === 2){
+//				flavor += "Begabung für Elementar (Feuer)<br>";
+//			}if(BGWaterMod === 2){
+//			flavor += "Merkmalskenntnis: Elementar (Wasser)<br>";
+//			}if(BGHumusMod === 2){
+//				flavor += "Begabung für Elementar (Humus)<br>";
+//			}if(BGIceMod === 2){
+//				flavor += "Begabung für Elementar (Eis)<br>";
+//			}if(BGOreMod === 2){
+//				flavor += "Begabung für Elementar (Erz)<br>";
+//			}if(BGAirMod === 2){
+//				flavor += "Begabung für Elementar (Luft)<br>";
+//			}
+//			flavor += "<u>Sonderfertigkeiten</u><br>";					//Kontrolle, ob die Sonderfertigkeiten erkannt werden
+//			if(MKFireMod === 2){
+//				flavor += "Merkmalskenntnis: Elementar (Feuer)<br>";
+//			}if(MKWaterMod === 2){
+//				flavor += "Merkmalskenntnis: Elementar (Wasser)<br>";
+//			}if(MKHumusMod === 2){
+//				flavor += "Merkmalskenntnis: Elementar (Humus)<br>";
+//			}if(MKIceMod === 2){
+//				flavor += "Merkmalskenntnis: Elementar (Eis)<br>";
+//			}if(MKOreMod === 2){
+//				flavor += "Merkmalskenntnis: Elementar (Erz)<br>";
+//			}if(MKAirMod === 2){
+//				flavor += "Merkmalskenntnis: Elementar (Luft)<br>";
+//			}
 			
             roll.toMessage ({
                 flavor: flavor,
