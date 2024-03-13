@@ -1,4 +1,5 @@
 //Skript für die elementaren Vrianten des Ignifaxius-Zaubers
+//Das Makro "Mindergeister" wird benötigt, wenn das Entstehen von Mindergeistern bei Elementaren Zaubern berücksichtigt werden soll
 
 main();
 async function main() {
@@ -32,38 +33,40 @@ async function main() {
 		const tokenName = token.actor.name;
 
 	//Eigenschaften des Helden	
-		const courage = token.actor.system.base.basicAttributes.courage.value;																														//Mut				MU
-		const cleverness = token.actor.system.base.basicAttributes.cleverness.value;																												//Klugheit			KL
-		const intuition = token.actor.system.base.basicAttributes.intuition.value;																													//Intuition			IN
-		const charisma = token.actor.system.base.basicAttributes.charisma.value;																													//Charisma			CH
-		const dexterity = token.actor.system.base.basicAttributes.dexterity.value;																													//Fingerfertigkeit	FF
-		const agility = token.actor.system.base.basicAttributes.agility.value;																														//Gewandheit		GE
-		const constitution = token.actor.system.base.basicAttributes.constitution.value;																											//Konstitution		KO
-		const strength = token.actor.system.base.basicAttributes.strength.value;																													//Körperkraft		KK
-		const magicResistance = token.actor.system.base.combatAttributes.passive.magicResistance.value; 																							//Magieresistenz	MR
-		const astralEnergy = token.actor.system.base.resources.astralEnergy.value;																													//Astralenergie		AE
+		const courage = token.actor.system.base.basicAttributes.courage.value;																		//Mut				MU
+		const cleverness = token.actor.system.base.basicAttributes.cleverness.value;																//Klugheit			KL
+		const intuition = token.actor.system.base.basicAttributes.intuition.value;																	//Intuition			IN
+		const charisma = token.actor.system.base.basicAttributes.charisma.value;																	//Charisma			CH
+		const dexterity = token.actor.system.base.basicAttributes.dexterity.value;																	//Fingerfertigkeit	FF
+		const agility = token.actor.system.base.basicAttributes.agility.value;																		//Gewandheit		GE
+		const constitution = token.actor.system.base.basicAttributes.constitution.value;															//Konstitution		KO
+		const strength = token.actor.system.base.basicAttributes.strength.value;																	//Körperkraft		KK
+		const magicResistance = token.actor.system.base.combatAttributes.passive.magicResistance.value; 											//Magieresistenz	MR
+		const astralEnergy = token.actor.system.base.resources.astralEnergy.value;																	//Astralenergie		AE
 
 	//Zauber des Helden
-		const Ignifaxius = token.actor.items.find(item => item.name === "Ignifaxius Flammenstrahl");																								//Suche nach dem Zauber "Ignifaxius Flammenstrahl"
-		const IgnifaxiusValue = (Ignifaxius === undefined)? isNaN : (Ignifaxius.system.value === null)? 0 : Ignifaxius.system.value;																//Abrufen des ZfW des Zaubers "Ignifaxius Flammenstrahl"
-		const Frigifaxius = token.actor.items.find(item => item.name === "Frigifaxius Eisstrahl");																									//Suche nach dem Zauber "Frigifaxius Eisstrahl"
-		const FrigifaxiusValue = (Frigifaxius === undefined)? isNaN : (Frigifaxius.system.value === null)? 0 : Frigifaxius.system.value;															//Abrufen des ZfW des Zaubers "Frigifaxius Eisstrahl"
-		const Archofaxius = token.actor.items.find(item => item.name === "Archofaxius Erzstrahl");																									//Suche nach dem Zauber "Archofaxius Erzstrahl"
-		const ArchofaxiusValue = (Archofaxius === undefined)? isNaN : (Archofaxius.system.value === null)? 0 : Archofaxius.system.value;															//Abrufen des ZfW des Zaubers "Archofaxius Erzstrahl"
-		const Orcanofaxius = token.actor.items.find(item => item.name === "Orcanofaxius Luftstrahl");																								//Suche nach dem Zauber "Orcanofaxius Luftstrahl"
-		const OrcanofaxiusValue = (Orcanofaxius === undefined)? isNaN : (Orcanofaxius.system.value === null)? 0 : Orcanofaxius.system.value;														//Abrufen des ZfW des Zaubers "Orcanofaxius Luftstrahl"
-		const Aquafaxius = token.actor.items.find(item => item.name === "Aquafaxius Wasserstrahl");																									//Suche nach dem Zauber "Aquafaxius Wasserstrahl"
-		const AquafaxiusValue = (Aquafaxius === undefined)? isNaN : (Aquafaxius.system.value === null)? 0 : Aquafaxius.system.value;																//Abrufen des ZfW des Zaubers "Aquafaxius Wasserstrahl"
-		const Humofaxius = token.actor.items.find(item => item.name === "Humofaxius Erdstrahl");																									//Suche nach dem Zauber "Humofaxius Erdstrahl"
-		const HumofaxiusValue = (Humofaxius === undefined)? isNaN : (Humofaxius.system.value === null)? 0 : Humofaxius.system.value;																//Abrufen des ZfW des Zaubers "Humofaxius Erdstrahl"
+		const Ignifaxius = token.actor.items.find(item => item.name === "Ignifaxius Flammenstrahl");												//Suche nach dem Zauber "Ignifaxius Flammenstrahl"
+		const IgnifaxiusValue = (Ignifaxius === undefined)? isNaN : (Ignifaxius.system.value === null)? 0 : Ignifaxius.system.value;				//Abrufen des ZfW des Zaubers "Ignifaxius Flammenstrahl"
+		const Frigifaxius = token.actor.items.find(item => item.name === "Frigifaxius Eisstrahl");													//Suche nach dem Zauber "Frigifaxius Eisstrahl"
+		const FrigifaxiusValue = (Frigifaxius === undefined)? isNaN : (Frigifaxius.system.value === null)? 0 : Frigifaxius.system.value;			//Abrufen des ZfW des Zaubers "Frigifaxius Eisstrahl"
+		const Archofaxius = token.actor.items.find(item => item.name === "Archofaxius Erzstrahl");													//Suche nach dem Zauber "Archofaxius Erzstrahl"
+		const ArchofaxiusValue = (Archofaxius === undefined)? isNaN : (Archofaxius.system.value === null)? 0 : Archofaxius.system.value;			//Abrufen des ZfW des Zaubers "Archofaxius Erzstrahl"
+		const Orcanofaxius = token.actor.items.find(item => item.name === "Orcanofaxius Luftstrahl");												//Suche nach dem Zauber "Orcanofaxius Luftstrahl"
+		const OrcanofaxiusValue = (Orcanofaxius === undefined)? isNaN : (Orcanofaxius.system.value === null)? 0 : Orcanofaxius.system.value;		//Abrufen des ZfW des Zaubers "Orcanofaxius Luftstrahl"
+		const Aquafaxius = token.actor.items.find(item => item.name === "Aquafaxius Wasserstrahl");													//Suche nach dem Zauber "Aquafaxius Wasserstrahl"
+		const AquafaxiusValue = (Aquafaxius === undefined)? isNaN : (Aquafaxius.system.value === null)? 0 : Aquafaxius.system.value;				//Abrufen des ZfW des Zaubers "Aquafaxius Wasserstrahl"
+		const Humofaxius = token.actor.items.find(item => item.name === "Humofaxius Erdstrahl");													//Suche nach dem Zauber "Humofaxius Erdstrahl"
+		const HumofaxiusValue = (Humofaxius === undefined)? isNaN : (Humofaxius.system.value === null)? 0 : Humofaxius.system.value;				//Abrufen des ZfW des Zaubers "Humofaxius Erdstrahl"
 
 	//Vor- und Nachteile
 
 	//Sonderfertigkeiten des Helden
-		const CheckMage = token.actor.items.find(item => item.name === "Repräsentation: Magier");
-		const CheckMageMod = (CheckMage === undefined)? false : true;
-		const Kraftkontrolle = token.actor.items.find(item => item.name === "Kraftkontrolle");																										//Suche nach der Sonderfertigkeit "Kraftkontrolle"
-		const KraftkontrolleValue = (Kraftkontrolle === undefined)? 0 : (Kraftkontrolle.system.value === null)? 0 : 1;																				//Zuweisen eines Wertes für die Einsparung von Astralenergie
+		const CheckMage = token.actor.items.find(item => item.name === "Repräsentation: Magier");													//Suche nach der Sonderfertigkeit: Repräsentation: Magier
+		const CheckMageMod = (CheckMage === undefined)? false : true;																				//Entscheidung: wahr:falsch
+		const Kraftkontrolle = token.actor.items.find(item => item.name === "Kraftkontrolle");														//Suche nach der Sonderfertigkeit "Kraftkontrolle"
+		const KraftkontrolleValue = (Kraftkontrolle === undefined)? 0 : (Kraftkontrolle.system.value === null)? 0 : 1;								//Zuweisen eines Wertes für die Einsparung von Astralenergie
+		const Fernzauberei = token.actor.items.find(item => item.name === "Fernzauberei");															//Suche nach der Sonderfertigkeit "Fernzauberei"
+		const FernzaubereiValue = (Fernzauberei === undefined)? 1 : (Fernzauberei.system.value === null)? 1 : 0.5;									//Zuweisen eines Wertes für die Verminderungen des Zuschlags
 
 
 //###############################################################################################################################################################################################################################################
@@ -127,12 +130,21 @@ async function main() {
                     <option value="5">50 %</option>
                  </select>
             </form>
-        `+ divFlexEnd	
-	inputDialog += divFlexStart + `
-            <label for="checkhalfTime">Halbierte Zauberdauer (mindestens 1 Aktion)</label><input type="checkbox" id="checkhalfTime" name="checkhalfTime" style="float:right">
         `+ divFlexEnd
 	inputDialog += divFlexStart + `
-            <label for="checkdoubledTime">Verdoppelte Zauberdauer (nur einmalig)</label><input type="checkbox" id="checkdoubledTime" name="checkdoubledTime" style="float:right">
+            <form action"#">
+                 <label for="increaseRange">Reichweite vergrößern (+5 ZfP pro Stufe)</label>
+                 <select name="increaseRange" id="increaseRange" style="float:right">
+                    <option value="0">bis 21 Schritt</option>
+                    <option value="1">bis 49 Schritt</option>
+                    <option value="2">bis zum Horizont</option>
+					<option value="3">außer Sicht</option>
+                  </select>
+            </form>
+        `+ divFlexEnd	
+	inputDialog += divFlexStart + "Halbierte Zauberdauer (+5 ZfP pro Halbierung):<br><i>Anzahl der Halbierungen, mindestens 1 Aktion</i> <input id='checkhalfTime'" + divInputNumber  + "0'/>" + divFlexEnd + "<br>";
+	inputDialog += divFlexStart + `
+            <label for="checkdoubledTime">Verdoppelte Zauberdauer (-3 ZfP, nur einmalig)</label><input type="checkbox" id="checkdoubledTime" name="checkdoubledTime" style="float:right">
         `+ divFlexEnd;
 		
 //###############################################################################################################################################################################################################################################	
@@ -156,20 +168,21 @@ async function main() {
 	
     async function htmlCallback(html){
 		
-		//Input Boxes
+	//Input Boxes
 		const reduceAsPInput = Number(html.find("#reduceAsP")[0]?.value || 0);			//AsP Kosten einsparen
+		const increaseRangeInput = Number(html.find("#increaseRange")[0]?.value || 0);	//Reichweite vergrößern
 		const spellInput = Number(html.find("#SelectSpell")[0]?.value || 0);			//Zauber auswählen
 		const ModInput = Number(html.find("#SelectMod")[0]?.value || 0);				//Modifikation auswählen
 		const NoDmgDiceInput = Number(html.find("#NoDmgDice")[0]?.value || 0);			//Anzahl der Schadenswürfel festlegen
-	
-		//Checkboxes
-		const checkhalfTimeInput = html.find("#checkhalfTime")[0].checked;				//Halbierte Zauberdauer (mindestens 1 Aktion)
-				halfTimeMod = (checkhalfTimeInput === true)? 5 : 0;						//Zuweisen eines Wertes für aktivierte Checkbox
+		const checkhalfTimeInput = Number(html.find("#checkhalfTime")[0]?.value || 0);	//Halbierungen Zauberdauer (mindestens 1 Aktion)
+		halfTimeMod = checkhalfTimeInput * 5;											//5 ZfP/Halbierung
+
+	//Checkboxes
 		const checkdoubledTimeInput = html.find("#checkdoubledTime")[0].checked;		//Verdoppelte Zauberdauer (nur einmalig)
 				doubledTimeMod = (checkdoubledTimeInput === true)? 3 : 0;				//Zuweisen eines Wertes für aktivierte Checkbox
 
 		
-		//Dropdown
+	//Dropdown
 		switch(spellInput){
             case 0:
 				SpellName = "Ignifaxius Flammenstrahl";
@@ -330,8 +343,27 @@ async function main() {
 				reduceAsPTime = 5;
 				break;
         }
+
+		switch(increaseRangeInput){
+			case 0:
+				rangeZfPMod = 0;
+				rangeTimeMod = 0;
+				break;
+			case 1:
+				rangeZfPMod = Math.round(5 * FernzaubereiValue);
+				rangeTimeMod = 1;
+				break;
+			case 2:
+				rangeZfPMod = Math.round(10 * FernzaubereiValue);
+				rangeTimeMod = 2;
+				break;
+			case 3:
+				rangeZfPMod = 15;
+				rangeTimeMod = 3;
+				break;
+		}				
 		
-		//Spell
+	//Spell
 		const ZfW = SpellValue;
 
 	    if(SpellValue === isNaN) {
@@ -345,55 +377,54 @@ async function main() {
 
 	//Berechnung der Schadenspunkte
 		//Berechnung der maximalen Anzahl an Schadenswürfeln
-		NumberDmgDiceInputMax = ZfW - SpellMod;
-		if(NoDmgDiceInput > NumberDmgDiceInputMax){
-			NumberDmgDiceInput = NumberDmgDiceInputMax;
-		}else{
-			NumberDmgDiceInput = NoDmgDiceInput;
-		}
+			NumberDmgDiceInputMax = ZfW - SpellMod;
+			if(NoDmgDiceInput > NumberDmgDiceInputMax){
+				NumberDmgDiceInput = NumberDmgDiceInputMax;
+			}else{
+				NumberDmgDiceInput = NoDmgDiceInput;
+			}
 			
 		//Startbedingungen festlegen
-		totalDmg = 0;
-		let ResultDmg;
-		let Dice = [];			//Sortieren der Einzelwürfe
-				
-			//Loop-Start Schadenswürfel
-			for(let i = 0; i < NumberDmgDiceInput; i++){
-				//W6-Wurf
-					if(ModInput === 1){
-						ResultDmg = Math.floor(Math.random() * 6);
-					}else{
-						ResultDmg = Math.floor(Math.random() * 6) + 1;
-					}
-				//Absteigendes Sortieren der Würfel
-					Dice.push(ResultDmg);
-					Dice.sort((a,b) => a - b);
-				//Speichern der einzelnen Würfel
-					console.log(Dice);
-				//Aufsummieren der einzelnen Schadenswürfel
-					totalDmg += ResultDmg;
-			}		
+			totalDmg = 0;
+			let ResultDmg;
+			let Dice = [];			//Sortieren der Einzelwürfe
+					
+				//Loop-Start: Schadenswürfel
+				for(let i = 0; i < NumberDmgDiceInput; i++){
+					//W6-Wurf
+						if(ModInput === 1){
+							ResultDmg = Math.floor(Math.random() * 6);
+						}else{
+							ResultDmg = Math.floor(Math.random() * 6) + 1;
+						}
+					//Absteigendes Sortieren der Würfel
+						Dice.push(ResultDmg);
+						Dice.sort((a,b) => a - b);
+					//Speichern der einzelnen Würfel
+						console.log(Dice);
+					//Aufsummieren der einzelnen Schadenswürfel
+						totalDmg += ResultDmg;
+				}		
 
+	//Berechnung der AsP-Kosten
 		totalAsPcosts = Math.round((totalDmg - KraftkontrolleValue) * reductionFactor);
 			if(totalAsPcosts < astralEnergy){
-		//Einschränkung, dass der Zauber nicht mehr AsP kosten kann, als dem Helden derzeit zur Verfügung stehen.
+	//Einschränkung, dass der Zauber nicht mehr AsP kosten kann, als dem Helden derzeit zur Verfügung stehen.
 				AsPcosts = totalAsPcosts;
 			}else{
 				AsPcosts = astralEnergy;
 			}
 
+	//Berechnung des tatsächlichen ZfP unter Berücksichtigung aller Modifikationen
+	//Gildenmagier: ZfP-Zuschläge von "Spontanen Modifikation" sind halbiert 
 		if(checkMageMod = true){
-			if(doubledTimeMod === 0){
-				mod = - doubledTimeMod + Math.round((halfTimeMod + reduceAsPMod)/2) + SpellMod
-			}else{
-				- (doubledTimeMod + 1) + Math.round((halfTimeMod + reduceAsPMod)/2) + SpellMod
-			}
+			mod = 0 - doubledTimeMod + Math.round((rangeZfPMod+ halfTimeMod + reduceAsPMod)/2) + SpellMod
 		}else{
-			mod = - doubledTimeMod + halfTimeMod + reduceAsPMod + SpellMod
+			mod = 0 - doubledTimeMod + rangeZfPMod + halfTimeMod + reduceAsPMod + SpellMod
 		}
 		modOutput = (mod >=0)? "+" + mod: mod;
 
-		//Roll the dice
+	//Roll the dice
         let spellRoll = new Roll("3d20").roll({async: true});
         spellRoll.then(roll =>{
 			let w1 = roll.terms[0].results[0].result;
@@ -436,22 +467,26 @@ async function main() {
                 };
             };
 
-			//Berechnung der Zauberdauer
-				if(halfTimeMod === 5){
-					RedTimeMod = 0.5;
-				}else{
-					RedTimeMod = 1;
-				}
+		//Berechnung der Zauberdauer
+			RedTimeMod = 1 / (checkhalfTimeInput + 1);
+									
+			if(doubledTimeMod === 3){
+				ddTimeMod = 2;
+			}else{
+				ddTimeMod = 1;
+			}
 				
-				if(doubledTimeMod === 3){
-					ddTimeMod = 2;
-				}else{
-					ddTimeMod = 1;
-				}
-				
-				TimeA = 4;
-				totalTime = ((TimeA + reduceAsPTime) * RedTimeMod * ddTimeMod)
-				
+			TimeA = 4;
+			modifiedTime = (TimeA + reduceAsPTime + rangeTimeMod) * RedTimeMod * ddTimeMod;
+			
+		//Beschränkung dass der Zauber mindestens 1 Aktion dauern muss
+			if(modifiedTime < 1){
+				totalTime = 1;
+			}else{
+				totalTime = Math.round(modifiedTime);
+			}
+			
+		//Ergebnis des Zaubers	
 			if(spellResult < 0){
 				aspUpdate = astralEnergy - Math.round(totalAsPcosts/2);
 				token.actor.update({'system.base.resources.astralEnergy.value':aspUpdate});
@@ -466,8 +501,8 @@ async function main() {
 				Time = Math.round(totalTime);
 			}
 
-			//Chat Output
-            flavor = "<b>" + SpellName + "</b>";
+		//Chat Output
+			   flavor = "<b>" + SpellName + "</b>";
 			if(ModInput > 0){
 				flavor += " (" + SpellModName + ")>br>";
 				flavor += ModOutcome;
@@ -475,8 +510,8 @@ async function main() {
 			flavor += "<br>KL: " + w1 + " / " + "<b>" + cleverness + "</b>" + " (" + resOne + ")";
 			flavor += "<br>FF: " + w2 + " / " + "<b>" + dexterity + "</b>" + " (" + resTwo + ")";
 			flavor += "<br>KO: " + w3 + " / " + "<b>" + constitution + "</b>" + " (" + resThree + ")";
-            flavor += "<br>ZfW / Modifikation: " + eZfW + " / " + modOutput;
-            flavor += "<br>ZfW*: " + spellResult + " (" + luck + ")";
+			flavor += "<br>ZfW / Modifikation: " + eZfW + " / " + modOutput;
+			flavor += "<br>ZfW*: " + spellResult + " (" + luck + ")";
 			flavor += "<br>Kosten: " + AsPcosts + " AsP";
 			flavor += "<br>Dauer: " + Time + " Aktionen";
 			flavor += "<br>" + hr;
@@ -547,13 +582,14 @@ async function main() {
 				}
 				flavor += "Pro Punkt <i>Ausweichen</i> wird ein Würfel (aufsteigend) ignoriert<br>"
 			}
-            
-            roll.toMessage ({
-                flavor: flavor,
-                speaker: ChatMessage.getSpeaker({token: token.document})
-            },
-            {rollMode}
-            );
-        });
+					
+			roll.toMessage ({
+				flavor: flavor,
+				speaker: ChatMessage.getSpeaker({token: token.document})
+			},
+			{rollMode}
+			);
+		game.macros.getName("Mindergeister").execute()
+		});
 	}
 }		   
