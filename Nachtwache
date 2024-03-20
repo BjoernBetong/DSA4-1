@@ -27,9 +27,17 @@ async function main() {
 
 	//Talente des Helden
 		const Selbstbeherrschung = token.actor.items.find(item => item.name === "Selbstbeherrschung");																			//Suche nach dem Talent "Selbstbeherrschung"
-		const SelbstbeherrschungValue = (Selbstbeherrschung === undefined)? isNaN : (Selbstbeherrschung.system.value === null)? 0 : Selbstbeherrschung.system.value;			//Abrufen des TaW des Talents "Selbstbeherrschung"	//Vor und Nachteile des Helden
-		const Sinnenschaerfe = token.actor.items.find(item => item.name === "Sinnenschärfe");																					//Suche nach dem Talent "Sinnenschärfe"	//Sonderfertigkeiten des Helden
+		const SelbstbeherrschungValue = (Selbstbeherrschung === undefined)? isNaN : (Selbstbeherrschung.system.value === null)? 0 : Selbstbeherrschung.system.value;			//Abrufen des TaW des Talents "Selbstbeherrschung"
+		const Sinnenschaerfe = token.actor.items.find(item => item.name === "Sinnenschärfe");																					//Suche nach dem Talent "Sinnenschärfe"
 		const SinnenschaerfeValue = (Sinnenschaerfe === undefined)? isNaN : (Sinnenschaerfe.system.value === null)? 0 : Sinnenschaerfe.system.value;							//Abrufen des TaW des Talents "Sinnenschärfe"
+		const Wildnisleben = token.actor.items.find(item => item.name === "Wildnisleben");																						//Suche nach dem Talent "Wildnisleben"
+		const WildnislebenValue = (Wildnisleben === undefined)? isNaN : (Wildnisleben.system.value === null)? 0 : Wildnisleben.system.value;									//Abrufen des TaW des Talents "Wildnisleben"
+		const Sternkunde = token.actor.items.find(item => item.name === "Sternkunde");																						//Suche nach dem Talent "Sternkunde"
+		const SternkundeValue = (Sternkunde === undefined)? isNaN : (Sternkunde.system.value === null)? 0 : Sternkunde.system.value;									//Abrufen des TaW des Talents "Sternkunde"
+		const Rechnen = token.actor.items.find(item => item.name === "Rechnen");																								//Suche nach dem Talent "Rechnen"
+		const RechnenValue = (Rechnen === undefined)? isNaN : (Rechnen.system.value === null)? 0 : Rechnen.system.value;														//Abrufen des TaW des Talents "Rechnen"
+		const Tierkunde = token.actor.items.find(item => item.name === "Tierkunde");																							//Suche nach dem Talent "Tierkunde"
+		const TierkundeValue = (Tierkunde === undefined)? isNaN : (Tierkunde.system.value === null)? 0 : Tierkunde.system.value;												//Abrufen des TaW des Talents "Tierkunde"
 
 	//Metatalent "Wache halten"
 		Wachehalten = Math.round((SelbstbeherrschungValue + 2 * SinnenschaerfeValue + 1)/3);																					//Berechnungsformel des MetaTalent "Wache halten" wie sie in der Helden-Software berechnet wird
@@ -55,7 +63,23 @@ async function main() {
 	//Die Nachtwache
 	headerDialog = "<h2><b> Die Nachtwache </b><br></h2>";
     inputDialog = headerDialog;
-	inputDialog += divFlexStart + "Wie viele Punkte Erschöpfung? <input id='exhaust'" + divInputNumber  + "0'/>" + divFlexEnd;
+	inputDialog += "Berechnung der Wachdauer<br>";
+	    inputDialog += divFlexStart + `
+            <form action"#">
+                 <label for="SelectSchedule">Wie wird die Zeit berechnet? </label>
+                 <select name="SelectSchedule" id="SelectSchedule" style="float:right">
+					<option value="0">keine Hilfsmittel</option>
+					<option value="1">Stundenglas/-kerzen</option>
+					<option value="99">-----nur mit Wachfeuer-----</option>
+					<option value="2">Anhand des Holzverbrauchs</option>
+					<option value="99">-----nur bei klarem Himmel-----</option>
+					<option value="3">Anhand der Sterne</option>
+					<option value="99">-----ab 2 h Stunden vor Sonnenaufgang-----</option>
+					<option value="4">Anhand der Tierstimmen</option>
+					</select>
+			</form>
+        `+ divFlexEnd + hr;
+	inputDialog += divFlexStart + "Wie viele Punkte Erschöpfung? <input id='exhausted'" + divInputNumber  + "0'/>" + divFlexEnd;
 	inputDialog += divFlexStart + "Wie viele Stunde wird gewacht? <input id='Time'" + divInputNumber  + "0'/>" + divFlexEnd;
 	inputDialog += divFlexStart + `
             <label for="checkCompany">Hat der Wachende Gesellschaft? </label><input type="checkbox" id="checkCompany" name="checkCompany" style="float:right">
@@ -75,7 +99,7 @@ async function main() {
                     <option value="2">heller Mondschein (-1)</option>
                  </select>
             </form>
-        `+ divFlexEnd
+        `+ divFlexEnd;
     inputDialog += divFlexStart + `
             <form action"#">
                  <label for="SelectTension">Wie ist die Anspannung? </label>
@@ -85,7 +109,7 @@ async function main() {
                     <option value="2">es könnte jederzeit ein Angriff kommen (-1)</option>
                  </select>
             </form>
-        `+ divFlexEnd
+        `+ divFlexEnd;
     inputDialog += divFlexStart + `
             <form action"#">
                  <label for="SelectEncounter">Gab es besondere Vorkommnisse? </label>
@@ -95,7 +119,7 @@ async function main() {
                     <option value="2">ständig raschelt es im Unterholz (-1)</option>
                  </select>
             </form>
-        `+ divFlexEnd
+        `+ divFlexEnd;
     inputDialog += divFlexStart + `
             <form action"#">
                  <label for="SelectPosition">Wie ist die Haltung? </label>
@@ -108,7 +132,6 @@ async function main() {
         `+ divFlexEnd + hr;
 	inputDialog += divFlexStart + "Modifikator für zweite Probe: <input id='repetition'" + divInputNumber  + "0'/>" + divFlexEnd;
 		
-
 
 //###############################################################################################################################################################################################################################################	
 
@@ -132,7 +155,7 @@ async function main() {
     async function htmlCallback(html){
 		
 	//Input Boxes
-		const exhaustInput = Number(html.find("#exhaust")[0]?.value || 0);				
+		const exhaustedInput = Number(html.find("#exhausted")[0]?.value || 0);				
 		const TimeInput = Number(html.find("#Time")[0]?.value || 0);				
 		const DarknessInput = Number(html.find("#SelectDarkness")[0]?.value || 0);
 		const TensionInput = Number(html.find("#SelectTension")[0]?.value || 0);
@@ -140,6 +163,12 @@ async function main() {
 		const PositionInput = Number(html.find("#SelectPosition")[0]?.value || 0);
 		const repetitionInput = Number(html.find("#repetition")[0]?.value || 0);
 			repetitionMod = Math.abs(repetitionInput);
+		const ScheduleInput = Number(html.find("#SelectSchedule")[0]?.value || 0);
+
+    if(TimeInput === 0) {
+        ui.notifications.error("Bitte eine Wachdauer eingeben.");
+        return;
+    };
 
 	//Checkboxes
 		const checkFireInput = html.find("#checkFire")[0].checked;		
@@ -198,10 +227,289 @@ async function main() {
 				break;
         }
 
-		
+		switch(ScheduleInput){
+			case 0:
+				add1_att1 = "";
+				add1_att1_DE = "";
+				add1_att2 = "";
+				add1_att3 = "";
+				add1_Talent = "";
+				add1_TalentValue = "";
+				add1_mod = "";
+				add2_att1 = "";
+				add2_att2 = "";
+				add2_att3 = "";
+				add2_Talent = "";
+				add2_TalentValue = "";
+				add2_mod = "";
+				break;
+			case 1:
+				add1_att1 = "";
+				add1_att1_DE = "";
+				add1_att2 = "";
+				add1_att3 = "";
+				add1_Talent = "";
+				add1_TalentValue = "";
+				add1_mod = "";
+				add2_att1 = "";
+				add2_att2 = "";
+				add2_att3 = "";
+				add2_Talent = "";
+				add2_TalentValue = "";
+				add2_mod = "";
+				break;
+			case 2:
+				add1_att1 = intuition;
+				add1_att1_DE = "IN";
+				add1_att2 = agility;
+				add1_att2_DE = "GE";
+				add1_att3 = constitution;
+				add1_att3_DE = "KO";
+				add1_Talent = "Wildnisleben";
+				add1_TalentValue = WildnislebenValue;
+				add1_mod = 10;
+				add2_att1 = "";
+				add2_att2 = "";
+				add2_att3 = "";
+				add2_Talent = "";
+				add2_TalentValue = "";
+				add2_mod = "";
+				break;
+			case 3:
+				add1_att1 = cleverness;
+				add1_att1_DE = "KL";
+				add1_att2 = cleverness;
+				add1_att2_DE = "KL";
+				add1_att3 = intuition;
+				add1_att3_DE = "IN";
+				add1_Talent = "Sternkunde";
+				add1_TalentValue = SternkundeValue;
+				add1_mod = 0;
+				add2_att1 = cleverness;
+				add2_att1_DE = "KL";
+				add2_att2 = cleverness;
+				add2_att2_DE = "KL";
+				add2_att3 = intuition;
+				add2_att3_DE = "IN";
+				add2_Talent = "Rechnen";
+				add2_TalentValue = RechnenValue
+				add2_mod = 0;
+				break;
+			case 4:
+				add1_att1 = courage;
+				add1_att1_DE = "KL";
+				add1_att2 = cleverness;
+				add1_att2_DE = "KL";
+				add1_att3 = intuition;
+				add1_att3_DE = "IN";
+				add1_Talent = "Tierkunde";
+				add1_TalentValue = TierkundeValue;
+				add1_mod = 5;
+				add2_att1 = "";
+				add2_att2 = "";
+				add2_att3 = "";
+				add2_Talent = "";
+				add2_TalentValue = "";
+				add2_mod = "";
+				break;				
+        }
+//Berechnung der Wachzeit
 	//Roll the dice
-        let spellRoll = new Roll("3d20").roll({async: true});
-        spellRoll.then(roll =>{
+        let TimeRoll = new Roll("6d20").roll({async: true});
+        TimeRoll.then(roll =>{
+			let add1_w1 = roll.terms[0].results[0].result;
+			let add1_w2 = roll.terms[0].results[1].result;
+			let add1_w3 = roll.terms[0].results[2].result;
+			let add2_w1 = roll.terms[0].results[3].result;
+			let add2_w2 = roll.terms[0].results[4].result;
+			let add2_w3 = roll.terms[0].results[5].result;
+
+	//Talente
+		const add1_TaW = add1_TalentValue;
+		const add2_TaW = add2_TalentValue;
+			
+			add1_modOutput = (add1_mod >=0)? "+" + add1_mod: add1_mod;
+			add2_modOutput = (add2_mod >=0)? "+" + add2_mod: add2_mod;
+
+			
+			add1_eTaW = add1_TaW;
+			add1_eTaWMod = add1_eTaW - add1_mod;
+			add1_resOne = add1_att1 - add1_w1;
+			add1_resOne += (add1_eTaWMod < 0)? add1_eTaWMod: 0;
+			add1_resTwo = add1_att2 - add1_w2;
+			add1_resTwo += (add1_eTaWMod < 0)? add1_eTaWMod: 0;
+			add1_resThree = add1_att3 - add1_w3;
+			add1_resThree += (add1_eTaWMod < 0)? add1_eTaWMod: 0;
+			add1_TalentResult = (add1_eTaWMod > 0)? add1_eTaWMod : 0;
+			add1_TalentResult += (add1_resOne < 0)? add1_resOne : 0;
+			add1_TalentResult += (add1_resTwo < 0)? add1_resTwo : 0;
+			add1_TalentResult += (add1_resThree < 0)? add1_resThree : 0;
+			add1_TalentResult = (add1_TalentResult == 0)? 1 : add1_TalentResult;
+			add1_TalentResult = Math.min(add1_TalentResult,add1_eTaW);
+
+            add1_luck = (add1_TalentResult >= 0)? "Erfolg":"Misserfolg";
+            add1_wSum1 = add1_w1 + add1_w2
+            add1_wSum2 = add1_w1 + add1_w3
+            add1_wSum3 = add1_w2 + add1_w3
+            add1_wSum4 = add1_w1 + add1_w2 + add1_w3
+            if(add1_wSum1 == 2 || add1_wSum2 == 2 || add1_wSum3 == 2){
+                if(add1_wSum4 == 3){
+                    add1_luck = "Spektakulärer Erfolg";
+                }else{
+                    add1_luck = "Glücklicher Erfolg";
+                };
+            };
+            if(add1_wSum1 == 40 || add1_wSum2 == 40 || add1_wSum3 == 40){
+                if(add1_wSum4 == 60){
+                    add1_luck = "Spektakulärer Patzer";
+                }else{
+                    add1_luck = "Patzer";
+                };
+            };		
+
+			add2_eTaW = add2_TaW;
+			add2_eTaWMod = add2_eTaW - add2_mod;
+			add2_resOne = add2_att1 - add2_w1;
+			add2_resOne += (add2_eTaWMod < 0)? add2_eTaWMod: 0;
+			add2_resTwo = add2_att2 - add2_w2;
+			add2_resTwo += (add2_eTaWMod < 0)? add2_eTaWMod: 0;
+			add2_resThree = add2_att3 - add2_w3;
+			add2_resThree += (add2_eTaWMod < 0)? add2_eTaWMod: 0;
+			add2_TalentResult = (add2_eTaWMod > 0)? add2_eTaWMod : 0;
+			add2_TalentResult += (add2_resOne < 0)? add2_resOne : 0;
+			add2_TalentResult += (add2_resTwo < 0)? add2_resTwo : 0;
+			add2_TalentResult += (add2_resThree < 0)? add2_resThree : 0;
+			add2_TalentResult = (add2_TalentResult == 0)? 1 : add2_TalentResult;
+			add2_TalentResult = Math.min(add2_TalentResult,add2_eTaW);
+
+            add2_luck = (add2_TalentResult >= 0)? "Erfolg":"Misserfolg";
+            add2_wSum1 = add2_w1 + add2_w2
+            add2_wSum2 = add2_w1 + add2_w3
+            add2_wSum3 = add2_w2 + add2_w3
+            add2_wSum4 = add2_w1 + add2_w2 + add2_w3
+            if(add2_wSum1 == 2 || add2_wSum2 == 2 || add2_wSum3 == 2){
+                if(add2_wSum4 == 3){
+                    add2_luck = "Spektakulärer Erfolg";
+                }else{
+                    add2_luck = "Glücklicher Erfolg";
+                };
+            };
+            if(add2_wSum1 == 40 || add2_wSum2 == 40 || add2_wSum3 == 40){
+                if(add2_wSum4 == 60){
+                    add2_luck = "Spektakulärer Patzer";
+                }else{
+                    add2_luck = "Patzer";
+                };
+            };			
+		
+		
+//###############################################################################################################################################################################################################################################	
+
+// Funktion zur Generierung einer normalverteilten Zufallszahl
+	function generateNormalDistribution(mean, stdDev) {
+    // Generiere eine Zufallszahl zwischen 0 und 1
+		const u1 = Math.random();
+		const u2 = Math.random();
+
+    // Berechne die Standardnormalverteilung
+		const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+
+    // Skaliere die Zufallszahl auf den gewünschten Wertebereich
+		const value = mean + stdDev * z;
+
+    // Begrenze den Wertebereich auf 0 bis 2
+		return Math.max(0, Math.min(2, value));
+}
+
+// Genereirung einer Zufallszahl mit Mittelwert (mean) 1 und Standardabweichung (stdDev) 0.5
+	const randomValue = generateNormalDistribution(1, 0.5);
+	console.log("Normalverteilte Zufallszahl:", randomValue);
+	
+//Die Wahrscheinlichkeit am Ende der Nachtwache einzuschlafen ist höher als am Anfang:
+	if(randomValue > 1){
+		WatchTimeMod = 2 - randomValue;
+	}else{
+		WatchTimeMod = randomValue
+	}
+
+//###############################################################################################################################################################################################################################################	
+
+			if(ScheduleInput == 1 || ScheduleInput == 2){
+				TimeMod = 1;
+			}if(ScheduleInput == 2 || ScheduleInput == 4){
+				if(add1_TalentResult > 0){
+					TimeMod = 1;
+				}else{
+					TimeMod = randomValue;
+				}
+			}if(ScheduleInput == 3){
+				if(add1_TalentResult > 0 && add2_TalentResult > 0){
+					TimeMod = 1;
+				}else{
+					TimeMod = randomValue;
+				}
+			}if(ScheduleInput == 0){
+				TimeMod = randomValue;
+			}
+
+		//Berechnung der tatsächlichen Wachdauer
+			TimeMin = TimeInput * 60 * TimeMod;
+			Time = TimeMin;
+			Timehour = Math.round(Time/60);
+			if(Time > 59){
+				absTimeMin = Time - (Timehour * 60);
+			}else{
+				absTimeMin = Time;
+			}
+			if(Timehour > 1 && absTimeMin > 1){
+				TimeOutput = "<b>" + Timehour + "</b> Stunden und <b>" + absTimeMin + "</b> Minuten";
+			}if(Timehour > 1 && absTimeMin == 1){
+				TimeOutput = "<b>" + Timehour + "</b> Stunden und <b>" + absTimeMin + "</b> Minute";
+			}if(Timehour > 1 && absTimeMin == 0){
+				TimeOutput = "<b>" + Timehour + "</b> Stunden";
+			}if(Timehour == 1 && absTimeMin > 1){
+				TimeOutput = "<b>" + Timehour + "</b> Stunde und <b>" + absTimeMin + "</b> Minuten";
+			}if(Timehour == 1 && absTimeMin == 1){
+				TimeOutput = "<b>" + Timehour + "</b> Stunde und <b>" + absTimeMin + "</b> Minute";
+			}if(Timehour == 1 && absTimeMin == 0){
+				TimeOutput = "<b>" + Timehour + "</b> Stunde";
+			}if(Timehour == 0 && absTimeMin > 1){
+				TimeOutput = "<b>" + absTimeMin + "</b> Minuten";
+			}if(Timehour == 0 && absTimeMin == 1){
+				TimeOutput = "<b>" + absTimeMin + "</b> Minute";
+			}
+
+		//Berechnung der Einschlafzeit
+			SleepTimeMin = TimeInput * 60 * WatchTimeMod;
+			SleepTime = Math.round(Math.random() * SleepTimeMin);
+			SleepTimehour = Math.round(Time/60);
+			if(SleepTime > 59){
+				absSleepTimeMin = SleepTime - (SleepTimehour * 60);
+			}else{
+				absSleepTimeMin = SleepTime;
+			}
+			if(SleepTimehour > 1 && absSleepTimeMin > 1){
+				SleepTimeOutput = "<b>" + SleepTimehour + "</b> Stunden und <b>" + absSleepTimeMin + "</b> Minuten";
+			}if(SleepTimehour > 1 && absSleepTimeMin == 1){
+				SleepTimeOutput = "<b>" + SleepTimehour + "</b> Stunden und <b>" + absSleepTimeMin + "</b> Minute";
+			}if(SleepTimehour > 1 && absSleepTimeMin == 0){
+				SleepTimeOutput = "<b>" + SleepTimehour + "</b> Stunden";
+			}if(SleepTimehour == 1 && absSleepTimeMin > 1){
+				SleepTimeOutput = "<b>" + SleepTimehour + "</b> Stunde und <b>" + absSleepTimeMin + "</b> Minuten";
+			}if(SleepTimehour == 1 && absSleepTimeMin == 1){
+				SleepTimeOutput = "<b>" + SleepTimehour + "</b> Stunde und <b>" + absSleepTimeMin + "</b> Minute";
+			}if(SleepTimehour == 1 && absSleepTimeMin == 0){
+				SleepTimeOutput = "<b>" + SleepTimehour + "</b> Stunde";
+			}if(SleepTimehour == 0 && absSleepTimeMin > 1){
+				SleepTimeOutput = "<b>" + absSleepTimeMin + "</b> Minuten";
+			}if(SleepTimehour == 0 && absSleepTimeMin == 1){
+				SleepTimeOutput = "<b>" + absSleepTimeMin + "</b> Minute";
+			}
+
+//Talentwurf		
+	//Roll the dice
+        let TalentRoll = new Roll("3d20").roll({async: true});
+        TalentRoll.then(roll =>{
 			let w1 = roll.terms[0].results[0].result;
 			let w2 = roll.terms[0].results[1].result;
 			let w3 = roll.terms[0].results[2].result;
@@ -209,7 +517,7 @@ async function main() {
 	//Talent
 		const TaW = WachehaltenValue;
 			
-			mod = exhaustInput + TimeInput + FireMod + DarknessMod + TensionMod + EncounterMod + PositionMod + Math.min(ADWMod, CompanyMod) - repetitionMod
+			mod = exhaustedInput + Math.round(Time / 60) + FireMod + DarknessMod + TensionMod + EncounterMod + PositionMod + Math.min(ADWMod, CompanyMod) - repetitionMod
 			modOutput = (mod >=0)? "+" + mod: mod;
 			
 			eTaW = TaW;
@@ -247,49 +555,47 @@ async function main() {
                 };
             };
 
-		//Berechnung der Zeit
-			TimeMin = TimeInput * 60;
-			Time = Math.round(Math.random() * TimeMin);
-			Timehour = Math.round(Time/60);
-			if(Time > 59){
-				TimeMin2 = Time - (Timehour * 60);
-			}else{
-				TimeMin2 = Time;
-			}
-			if(Timehour > 1 && TimeMin2 > 1){
-				TimeOutput = "<b>" + Timehour + "</b> Stunden und <b>" + TimeMin2 + "</b> Minuten";
-			}if(Timehour > 1 && TimeMin2 == 1){
-				TimeOutput = "<b>" + Timehour + "</b> Stunden und <b>" + TimeMin2 + "</b> Minute";
-			}if(Timehour > 1 && TimeMin2 == 0){
-				TimeOutput = "<b>" + Timehour + "</b> Stunden";
-			}if(Timehour == 1 && TimeMin2 > 1){
-				TimeOutput = "<b>" + Timehour + "</b> Stunde und <b>" + TimeMin2 + "</b> Minuten";
-			}if(Timehour == 1 && TimeMin2 == 1){
-				TimeOutput = "<b>" + Timehour + "</b> Stunde und <b>" + TimeMin2 + "</b> Minute";
-			}if(Timehour == 1 && TimeMin2 == 0){
-				TimeOutput = "<b>" + Timehour + "</b> Stunde";
-			}if(Timehour == 0 && TimeMin2 > 1){
-				TimeOutput = "<b>" + TimeMin2 + "</b> Minuten";
-			}if(Timehour == 0 && TimeMin2 == 1){
-				TimeOutput = "<b>" + TimeMin2 + "</b> Minute";
-			}
-
-
 		//Chat Output
             flavor = "<b> Die Nachtwache </b><br>";
+			flavor += "<u>Wache halten</u><br>";
 			flavor += "<b>MU</b>: " + w1 + "/" + "<b>" + courage + "</b>" + " (" + resOne + ")";
 			flavor += "<br><b>IN</b>: " + w2 + "/" + "<b>" + intuition + "</b>" + " (" + resTwo + ")";
 			flavor += "<br><b>FF</b>: " + w3 + "/" + "<b>" + dexterity + "</b>" + " (" + resThree + ")";
 			flavor += "<br>TaW / Modifikation: " + eTaW + " / " + modOutput;
 			flavor += "<br>TaP*: " + TalentResult + " (" + luck + ")" + "<br>";
+			if(ScheduleInput == 2 || ScheduleInput == 3 || ScheduleInput == 4){			
+				flavor += "<u>" + add1_Talent + "</u><br>";
+				flavor += "<b>" + add1_att1_DE + "</b>: " + add1_w1 + "/" + "<b>" + add1_att1 + "</b>" + " (" + add1_resOne + ")";
+				flavor += "<br><b>" + add1_att2_DE + "</b>: " + add1_w2 + "/" + "<b>" + add1_att2 + "</b>" + " (" + add1_resTwo + ")";
+				flavor += "<br><b>" + add1_att3_DE + "</b>: " + add1_w3 + "/" + "<b>" + add1_att3 + "</b>" + " (" + add1_resThree + ")";
+				flavor += "<br>TaW / Modifikation: " + add1_eTaW + " / " + add1_modOutput;
+				flavor += "<br>TaP*: " + add1_TalentResult + " (" + add1_luck + ")" + "<br>";
+			}
+			if(ScheduleInput == 3){			
+				flavor += "<u>" + add2_Talent + "</u><br>";
+				flavor += "<b>" + add2_att1_DE + "</b>: " + add2_w1 + "/" + "<b>" + add2_att1 + "</b>" + " (" + add2_resOne + ")";
+				flavor += "<br><b>" + add2_att2_DE + "</b>: " + add2_w2 + "/" + "<b>" + add2_att2 + "</b>" + " (" + add2_resTwo + ")";
+				flavor += "<br><b>" + add2_att3_DE + "</b>: " + add2_w3 + "/" + "<b>" + add2_att3 + "</b>" + " (" + add2_resThree + ")";
+				flavor += "<br>TaW / Modifikation: " + add2_eTaW + " / " + add2_modOutput;
+				flavor += "<br>TaP*: " + add2_TalentResult + " (" + add2_luck + ")" + "<br>";
+			}
 			if(TalentResult > -1){
-				flavor += "Es mag mühsam sein, aber " + tokenName + " bleibt wach, bis die Wache vorbei ist.";
+				flavor += "Es mag mühsam sein, aber " + tokenName + " bleibt wach, bis die Wache vorbei ist. <br>";
+				if(TimeMod == 1){
+					flavor += tokenName + " kann die Zeit richtig einschätzen und weckt die Ablösung pünktlich nach " + TimeOutput;
+				}if(TimeMod < 1){
+					flavor += tokenName + " schätzt die Wachdauer falsch ein und weckt die Ablösung bereits nach " + TimeOutput;
+				}if(TimeMod > 1){
+					flavor += tokenName + " schätzt die Wachdauer falsch ein und weckt die Ablösung erst nach " + TimeOutput;
+				}
 			}if(TalentResult == -1 || TalentResult == -2 || TalentResult == -3){
-				flavor += tokenName + " ertappt sich nach " + TimeOutput + " beim Sekundenschlaf. Wenn " + tokenName + " nichts dagegen unternimmt (herumlaufen, sich irgendwie beschäftigen), wird er/sie tiefer einschlafen.<br>Die Probe kann um " + Math.abs(TalentResult) + " erschwert wiederholt werden.";
+				flavor += tokenName + " ertappt sich nach " + SleepTimeOutput + " beim Sekundenschlaf. Wenn " + tokenName + " nichts dagegen unternimmt (herumlaufen, sich irgendwie beschäftigen), wird der Schlaf beim nächsten Mal tiefer sein."
+				flavor += "<br>Die Probe kann um <b>" + Math.abs(TalentResult) + "</b> erschwert wiederholt werden.";
 			}if(TalentResult == -4 || TalentResult == -5 || TalentResult == -6){
-				flavor += tokenName + " schläft nach " + TimeOutput + " ein und schreckt erst nach 5 bis 15 Minuten wieder hoch. Wenn " + tokenName + " nichts dagegen unternimmt (herumlaufen, sich irgendwie beschäftigen), wird er/sie tiefer einschlafen.<br>Die Probe kann um " + Math.abs(TalentResult) + " erschwert wiederholt werden.";
+				flavor += tokenName + " schläft nach " + SleepTimeOutput + " ein und schreckt erst nach <b>" + (2 + Math.round(Math.random() * 10)) + "</b> Minuten wieder hoch. Wenn " + tokenName + " nichts dagegen unternimmt (herumlaufen, sich irgendwie beschäftigen), wird der Schlaf beim nächsten Mal tiefer sein."
+				flavor += "<br>Die Probe kann um <b>" + Math.abs(TalentResult) + "</b> erschwert wiederholt werden.";
 			}if(TalentResult < -7 || (repetitionMod > 0 && TalentResult < 0)){
-				flavor += tokenName + " schlummert nach " + TimeOutput + " tief und fest und wird vermutlich am Morgen von einem schlecht gelaunten Gefährten geweckt. <br> Ob in den Zeiten, in denen die Wache schläft, irgendetwas passiert, bleibt der meisterlichen Gnade überlassen.";
+				flavor += tokenName + " schlummert nach " + SleepTimeOutput + " tief und fest und wird vermutlich am Morgen von einem schlecht gelaunten Gefährten geweckt. <br> Ob in den Zeiten, in denen die Wache schläft, irgendetwas passiert, bleibt der meisterlichen Gnade überlassen.";
 			}
 			
             roll.toMessage ({
@@ -298,6 +604,6 @@ async function main() {
             },
             {rollMode: CONST.DICE_ROLL_MODES.BLIND}
             );
-        });
+        })});
 	}
 }		   
