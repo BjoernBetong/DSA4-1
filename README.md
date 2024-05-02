@@ -80,11 +80,11 @@ o	Ist der Wurf kleiner als der Wert, wird er/sie ertappt und erhält keinen Lohn
 -	Fällt bei diesem Wurf eine 20 wird er/sie eingesperrt und muss SOx 10 Dukaten
 •	Löhne:
 o	Bei einem TaW zwischen 7 und 12 und einem passenden Sozialstatus betragen die Löhne:
--	Illegale Arbeiten – 1W20 Heller pro Woche
--	Billige Arbeitskräfte – 1W8 Heller pro Woche
--	Einfache Arbeitskräfte – 1W4 Silber pro Woche
--	Qualifizierte Arbeitskräfte – 5 + 1W4 Silber pro Woche
--	Hochqualifizierte Arbeitskräfte – 1W4 Dukaten pro Woche
+-	Illegale Arbeiten – 1W20 Heller pro Tag
+-	Billige Arbeitskräfte – 1W8 Heller pro Tag
+-	Einfache Arbeitskräfte – 1W4 Silber pro Tag
+-	Qualifizierte Arbeitskräfte – 5 + 1W4 Silber pro Tag
+-	Hochqualifizierte Arbeitskräfte – 1W4 Dukaten pro Tag
 o	Bei einem TaW < 7 reduziert sich der Lohn und jeweils 25% pro Punkt
 o	Bei einem TaW < 4 findet der Held/die Heldin keine Arbeit (und verdient auch dementsprechend nichts)
 o	Bei einem TaW > 12 steigt das Einkommen um 25% pro Talentpunkt
