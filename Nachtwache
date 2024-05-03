@@ -457,9 +457,9 @@ async function main() {
 			Time = TimeMin;
 			Timehour = Math.round(Time/60);
 			if(Time > 59){
-				absTimeMin = Time - (Timehour * 60);
+				absTimeMin = Math.round(Time - (Timehour * 60));
 			}else{
-				absTimeMin = Time;
+				absTimeMin = Math.round(Time);
 			}
 			if(Timehour > 1 && absTimeMin > 1){
 				TimeOutput = "<b>" + Timehour + "</b> Stunden und <b>" + absTimeMin + "</b> Minuten";
@@ -484,9 +484,9 @@ async function main() {
 			SleepTime = Math.round(Math.random() * SleepTimeMin);
 			SleepTimehour = Math.round(Time/60);
 			if(SleepTime > 59){
-				absSleepTimeMin = SleepTime - (SleepTimehour * 60);
+				absSleepTimeMin = Math.round(SleepTime - (SleepTimehour * 60));
 			}else{
-				absSleepTimeMin = SleepTime;
+				absSleepTimeMin = Math.round(SleepTime);
 			}
 			if(SleepTimehour > 1 && absSleepTimeMin > 1){
 				SleepTimeOutput = "<b>" + SleepTimehour + "</b> Stunden und <b>" + absSleepTimeMin + "</b> Minuten";
@@ -591,7 +591,7 @@ async function main() {
 			}if(TalentResult == -1 || TalentResult == -2 || TalentResult == -3){
 				flavor += tokenName + " ertappt sich nach " + SleepTimeOutput + " beim Sekundenschlaf. Wenn " + tokenName + " nichts dagegen unternimmt (herumlaufen, sich irgendwie beschäftigen), wird der Schlaf beim nächsten Mal tiefer sein."
 				flavor += "<br>Die Probe kann um <b>" + Math.abs(TalentResult) + "</b> erschwert wiederholt werden.";
-			}if(TalentResult == -4 || TalentResult == -5 || TalentResult == -6){
+			}if(TalentResult == -4 || TalentResult == -5 || TalentResult == -6 || TalentResult == -7){
 				flavor += tokenName + " schläft nach " + SleepTimeOutput + " ein und schreckt erst nach <b>" + (2 + Math.round(Math.random() * 10)) + "</b> Minuten wieder hoch. Wenn " + tokenName + " nichts dagegen unternimmt (herumlaufen, sich irgendwie beschäftigen), wird der Schlaf beim nächsten Mal tiefer sein."
 				flavor += "<br>Die Probe kann um <b>" + Math.abs(TalentResult) + "</b> erschwert wiederholt werden.";
 			}if(TalentResult < -7 || (repetitionMod > 0 && TalentResult < 0)){
