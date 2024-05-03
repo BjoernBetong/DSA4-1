@@ -56,7 +56,7 @@ async function main() {
 	headerDialog = "<h2>Belohnungen</h2>";
 	inputDialog = headerDialog;
 	inputDialog += divFlexStart + `
-			<label for="checkPay">Gewinn (check) oder Verlust (uncheck)?</label><input type="checkbox" id="checkPay" name="checkPay" style="float:right">
+			<label for="checkPay">Gewinn (uncheck) oder Verlust (check)?</label><input type="checkbox" id="checkPay" name="checkPay" style="float:right">
 		`+ divFlexEnd + hr;
 	inputDialog += divFlexStart + "Abenteuerpunkte: <input id='inputXP'" + divInputNumber + "0'/>" + divFlexEnd + hr; 
 	inputDialog += divFlexStart + "Sozialstatus: <input id='inputSocial'" + divInputNumber + "0'/>" + divFlexEnd + hr; 
