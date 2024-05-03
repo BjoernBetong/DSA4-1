@@ -27,53 +27,53 @@ TaW: (CH + GE) /2
 TaW: (FF + KO) /2
 o	Einfache Arbeiten
 -	Barde/Bardin (SO: 5 - 10)
-TaW: (Musizieren + Singen) /2
+TaW: (Musizieren + Singen)/2
 -	Bogenbauer*in/Armbruster*in (SO: 5 - 10)
-TaW: (2*Bogenbau + Armbrust oder Bogen) /3
+TaW: (2x Bogenbau + Armbrust oder Bogen)/3
 -	Fischer*in (SO: 3 - 8)
 Fischen/Angeln
 -	Goldschmied*in (SO: 5 - 10)
 TaW: Steinschneider/Juwelier
 -	Jäger*in (SO: 3 - 7)
-TaW: (Sich Verstecken + Tierkunde + Armbrust oder Bogen der Wurfspeer) /3
+TaW: (Sich Verstecken + Tierkunde + Armbrust oder Bogen der Wurfspeer)/3
 -	Koch/Köchin (SO: 5 - 10)
 TaW: Kochen
 -	Kräutersammler*in (SO: 5 - 10)
-TaW: (Wildnisleben + Sinnenschärfe + Pflanzenkunde) /3  Metatalent: Kräutersuchen
+TaW: (Wildnisleben + Sinnenschärfe + Pflanzenkunde)/3  Metatalent: Kräutersuchen
 -	Schreiner*in/Tischler*in (SO: 5 - 10)
 TaW: Holzbearbeitung
 -	Schaukämpfer*in (SO: 5 - 10)
-TaW: (Schauspielerei + 2*Nahkampftalent) /3
+TaW: (Schauspielerei + 2x Nahkampftalent)/3
 - Söldner*in (SO: 5 - 10)
 TaW: Kampftalent
 -	Tierbändiger*in (SO: 5 - 10)
 TaW: Abrichten
 -	Matrose/Matrosin (SO: 1 - 10)
-TaW: (2* Boote Fahren + Seefahrt)/3
+TaW: (2x Boote Fahren + Seefahrt)/3
 -	Nachtwächter*in (SO: 5 - 8)
-TaW: (2* Sinnenschärfe + Selbstbeherrschung) /3  Metatalent: Wachehalten
+TaW: (2x Sinnenschärfe + Selbstbeherrschung)/3  Metatalent: Wachehalten
 o	Qualifizierte Arbeiten
 -	Mechanicus/Mechanica (SO: 7-12)
 TaW: Feinmechanik oder Mechanik
 -	Privatlehrer*in (SO: 7 - 10)
 TaW: Lehren
 -	Schiffsbauer*in (SO: 7 - 10)
-TaW: (Zimmermann + Holzbearbeitung) /2
+TaW: (Zimmermann + Holzbearbeitung)/2
 -	Zureiter*in (SO: 7 - 10)
-TaW: (2* Abrichten + Reiten) /3
+TaW: (2x Abrichten + Reiten)/3
 o	Hochqualifizierte Arbeiten
 -	Apotheker*in (SO: 8 -12)
-TaW: (Alchimie + HK: Wunden + HK: Gift) /3
+TaW: (Alchimie + HK: Wunden + HK: Gift)/3
 -	Alchimist*in (SO: 6 - 10)
 TaW: Alchimie
 -	Magier*in (SO: 8 - 12)
-TaW: (Magiekunde + 2x Ritualkenntnis: Gildenmagie oder Runenzauberei oder Scharlatan) /3
+TaW: (Magiekunde + 2x Ritualkenntnis: Gildenmagie oder Runenzauberei oder Scharlatan)/3
 -	Medicus/Medica (SO: 7 - 12)
-TaW: (HK: Wunden + HK: Krankheiten) /2
+TaW: (HK: Wunden + HK: Krankheiten)/2
 -	Schwertmeister*in (SO: 10 - 14)
-TaW: (2* Kriegskunst + Lehren + 2* Nahkampftalent einer Klingenwaffe) /5
+TaW: (2x Kriegskunst + Lehren + 2x Nahkampftalent einer Klingenwaffe)/5
 -	Söldnerführer*in (SO: 7 - 12)
-TaW: (2* Kriegskunst + Kampftalent)
+TaW: (2x Kriegskunst + Kampftalent)
 •	Alchimisten und Magier gelten in manchen Gegenden als illegale Arbeiten
 •	Ist eine Arbeit illegal wird mit einem W20 auf einen Wert von (20 – TaW/2 – SO/2) gewürfelt
 o	Ist der Wurf kleiner als der Wert, wird er/sie ertappt und erhält keinen Lohn und muss einen zweiten W20 würfeln:
