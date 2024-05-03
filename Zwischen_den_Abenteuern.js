@@ -152,9 +152,11 @@ async function main() {
 		WachehaltenValue = Math.round((SinnenschaerfeValue + SinnenschaerfeValue + SelbstbeherrschungValue)/3);
 		
 	//Sozialstatus: zunächst als "generic Item" anlegen
-		const Sozialstatus = token.actor.items.find(item => item.name === "Sozialstatus");									
-		const SozialstatusValue = (Sozialstatus === undefined)? 0 : (Sozialstatus.system.quantity === null)? 0 : Sozialstatus.system.quantity;
-	
+	//	const Sozialstatus = token.actor.items.find(item => item.name === "Sozialstatus");									
+	//	const SozialstatusValue = (Sozialstatus === undefined)? 0 : (Sozialstatus.system.quantity === null)? 0 : Sozialstatus.system.quantity;
+
+	//Sozialstatus über das Skript: Belohnung gesetzt:
+		const SozialstatusValue = token.actor.system.base.social.social_status.value;
 
 
 
@@ -637,10 +639,10 @@ async function main() {
 		}
 		
 	//Einfluss eines unpassenden Sozialstatus auf den Lohn
-		if(Sozialstatus < lowerSO){
-			SOmod = (lowerSO - Sozialstatus)/100;
-		}if(Sozialstatus > upperSO){
-			SOmod = 1 + ((Sozialstatus - upperSO)/100);
+		if(SozialstatusValue < lowerSO){
+			SOmod = (lowerSO - SozialstatusValue)/100;
+		}if(SozialstatusValue > upperSO){
+			SOmod = 1 + ((SozialstatusValue - upperSO)/100);
 		}else{
 			SOmod = 1;
 		}
