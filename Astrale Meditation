@@ -149,7 +149,7 @@ async function main() {
 		 
 
 	//Roll the dice
-        let spellRoll = new Roll("3d20 + 1d3").roll({async: true});
+        let spellRoll = new Roll("3d20").roll({async: true});
         spellRoll.then(roll =>{
 			let w1 = roll.terms[0].results[0].result;
 			let w2 = roll.terms[0].results[1].result;
