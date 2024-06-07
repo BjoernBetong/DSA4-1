@@ -1,0 +1,258 @@
+//Skript für die astrale Meditation
+//Ritualkenntnisse müssen als Talent mit dem Namen: Gildenmagie, Hexe, Druide, oder Scharlatan angelegt sein
+
+main();
+async function main() {
+    //Überprüfe, ob ein Held ausgewählt wurde
+    if(canvas.tokens.controlled.length === 0 || canvas.tokens.controlled.length > 1) {
+        ui.notifications.error("Bitte einen Helden auswählen.");
+        return;
+    };
+    if(game.user.targets.size > 1) {
+        ui.notifications.error("Bitte nur einen Helden anvisieren.");
+        return;
+    };
+    
+	//gewählter Held
+    if(game.user.targets.size === 1){
+        targetActor = game.user.targets.values().next().value.actor;
+        targetName = targetActor.name;
+    }else{
+        targetActor = "";
+        targetName = "";
+	};
+
+	
+	//Abrufen des hinterlegten Würfelsystems
+    const rollMode = game.settings.get('core', 'rollMode');
+
+
+//###############################################################################################################################################################################################################################################
+
+	//Name des gewählten Helden
+		const tokenName = token.actor.name;
+
+	//Eigenschaften des Helden	
+		const courage = token.actor.system.base.basicAttributes.courage.value;																		//Mut				MU
+		const cleverness = token.actor.system.base.basicAttributes.cleverness.value;																//Klugheit			KL
+		const intuition = token.actor.system.base.basicAttributes.intuition.value;																	//Intuition			IN
+		const charisma = token.actor.system.base.basicAttributes.charisma.value;																	//Charisma			CH
+		const dexterity = token.actor.system.base.basicAttributes.dexterity.value;																	//Fingerfertigkeit	FF
+		const agility = token.actor.system.base.basicAttributes.agility.value;																		//Gewandheit		GE
+		const constitution = token.actor.system.base.basicAttributes.constitution.value;															//Konstitution		KO
+		const strength = token.actor.system.base.basicAttributes.strength.value;																	//Körperkraft		KK
+		const magicResistance = token.actor.system.base.combatAttributes.passive.magicResistance.value; 											//Magieresistenz	MR
+		const astralEnergy = token.actor.system.base.resources.astralEnergy.value;																	//Astralenergie		AsP
+		const vitality = token.actor.system.base.resources.vitality.value;																			//Lebensenergie		LeP
+		
+	//Talente des Helden
+		const Musizieren = token.actor.items.find(item => item.name === "Musizieren");																//Suche nach dem Talent "Musizieren"
+		const MusizierenValue = (Musizieren === undefined)? isNaN : (Musizieren.system.value === null)? 0 : Musizieren.system.value;				//Abrufen des TaW "Musizieren"
+		const Selbstbeherschung = token.actor.items.find(item => item.name === "Selbstbeherschung");																//Suche nach dem Talent "Selbstbeherschung"
+		const SelbstbeherschungValue = (Selbstbeherschung === undefined)? isNaN : (Selbstbeherschung.system.value === null)? 0 : Selbstbeherschung.system.value;	//Abrufen des TaW "Selbstbeherschung"
+		const RitualkenntnisGildenmagie = token.actor.items.find(item => item.name === "Gildenmagie");									
+		const RitualkenntnisGildenmagieValue = (RitualkenntnisGildenmagie === undefined)? 0 : (RitualkenntnisGildenmagie.system.value === null)? 0 : RitualkenntnisGildenmagie.system.value;
+		const RitualkenntnisHexe = token.actor.items.find(item => item.name === "Hexe");									
+		const RitualkenntnisHexeValue = (RitualkenntnisHexe === undefined)? 0 : (RitualkenntnisHexe.system.value === null)? 0 : RitualkenntnisHexe.system.value;
+		const RitualkenntnisDruide = token.actor.items.find(item => item.name === "Druide");									
+		const RitualkenntnisDruideValue = (RitualkenntnisDruide === undefined)? 0 : (RitualkenntnisDruide.system.value === null)? 0 : RitualkenntnisDruide.system.value;
+		const RitualkenntnisScharlatan = token.actor.items.find(item => item.name === "Scharlatan");									
+		const RitualkenntnisScharlatanValue = (RitualkenntnisScharlatan === undefined)? 0 : (RitualkenntnisScharlatan.system.value === null)? 0 : RitualkenntnisScharlatan.system.value;
+
+	//Vor- und Nachteile
+
+	//Sonderfertigkeiten des Helden
+		const CheckElv = token.actor.items.find(item => item.name === "Repräsentation: Elf");														//Suche nach der Sonderfertigkeit: Repräsentation: Elf
+		const CheckElvMod = (CheckElv === undefined)? false : true;																				//Entscheidung: wahr:falsch
+		const CheckRascal = token.actor.items.find(item => item.name === "Repräsentation: Schelm");													//Suche nach der Sonderfertigkeit: Repräsentation: Schelm
+		const CheckRascalMod = (CheckRascal === undefined)? false : true;																				//Entscheidung: wahr:falsch
+		const CheckAM = token.actor.items.find(item => item.name === "Astrale Meditation");															//Suche nach der Sonderfertigkeit: Astrale Meditation
+		const CheckAMMod = (CheckAM === undefined)? false : true;																					//Entscheidung: wahr:falsch
+
+//###############################################################################################################################################################################################################################################
+
+    //allgemeine Dialogoptionen
+		const hr = "<hr>";
+		const divFlexStart = "<div style='display:flex'><span style='flex:1'>";
+		const divFlexEnd = "</span></div>";
+		const divInputNumber = "type='number' style='width:50px;float:right' value='";
+		const divInputBox = "type='checkbox' style='width:70px;float:right' ";
+		const divInputUnchecked = "/>";
+		const divInputChecked = "checked />";
+	
+//###############################################################################################################################################################################################################################################    
+
+//Dialoge
+	//Beschwörung des Elementars
+	headerDialog = "<h2><b><i>" + tokenName + "</b></i><br>beginnt eine Astrale Meditation " + "</h2>";
+    inputDialog = headerDialog;
+	inputDialog += "- Pro Spielrunde Meditation wird 1 LeP in 1 AsP umgewandelt<br>";
+	inputDialog += "- Wird kein Thonnys verwendet, muss 1 AsP eingesetzt werden, um den Umwandlungsprozess in Gang zu setzen und der Held verliert zusätzlich 1W3 - 1 LeP" + hr;
+	inputDialog += divFlexStart + "Anzahl der Spielrunden: <input id='Time'" + divInputNumber  + "2'/>" + divFlexEnd + "<br>";
+	inputDialog += divFlexStart + `
+            <label for="checkThonnys">wird das Kraut Thonnys verwendet?</label><input type="checkbox" id="checkThonnys" name="checkThonnys" style="float:right">
+        `+ divFlexEnd;
+	
+//###############################################################################################################################################################################################################################################	
+
+ 
+//Probenwurf
+	new Dialog({
+        title: "Astrale Meditation",
+        content: inputDialog + hr,
+        buttons: {
+            close: {
+                icon: '<i class="fas fa-times"></i>', label: "Schließen"
+            }, 
+            accept: {
+                icon: '<i class="fas fa-check"></i>', label: "Würfeln", callback: htmlCallback
+            }  
+        },
+		default: "accept",
+        render: () => console.log(),
+        close: () => console.log()
+    }).render(true);
+	
+    async function htmlCallback(html){
+		
+	//Input Boxes
+		const TimeInput = Number(html.find("#Time")[0]?.value || 0);			//Länge der Meditationsdauer
+		const TimeMinutes = TimeInput * 5;
+
+	//Checkboxes
+		const checkThonnysInput = html.find("#checkThonnys")[0].checked;		//die Pflanze Thonny ermöglicht die Meditation ohne die SF: Astrale Meditation bzw. verbessert die Meditation
+		if(checkThonnysInput === true){
+			mod = 3;
+		}else{
+			mod = 0;
+		}
+	
+   if(CheckAMMod === false && checkThonnysInput === false){
+        ui.notifications.error("Du hast weder das Kraut Thonnys noch die 'SF: Astrale Meditation' und kannst daher keine LeP in AsP umwandeln.");
+        return;
+    };	
+		
+   if(token.actor.system.base.resources.astralEnergy.value < 1 && checkThonnysInput === false){
+        ui.notifications.error("Wird kein Thonnys verwendet, muss 1 AsP eingesetzt werden, um den Umwandlungsprozess in Gang zu setzen");
+        return;
+    };	
+		
+	//Value
+		if(CheckElvMod === true){
+			RkW = Math.round(MusizierenValue/2);
+		}if(CheckRascalMod === true){
+			RkW = Math.round(SelbstbeherschungValue/2);
+		}else{
+			RkW = Math.round((Math.max(RitualkenntnisGildenmagieValue || RitualkenntnisDruideValue || RitualkenntnisHexeValue || RitualkenntnisScharlatanValue))/2);
+		}
+
+		 
+
+	//Roll the dice
+        let spellRoll = new Roll("3d20 + 1d3").roll({async: true});
+        spellRoll.then(roll =>{
+			let w1 = roll.terms[0].results[0].result;
+			let w2 = roll.terms[0].results[1].result;
+			let w3 = roll.terms[0].results[2].result;
+		addDmgDice = "1d3";
+		addDmgRoll = new Roll(addDmgDice).roll({async:true})
+		addDmgRoll.then(roll =>{
+			let w4 = roll.total;
+
+
+			eRkW = RkW;
+			eRkWMod = eRkW + mod;
+			resOne = intuition - w1;
+			resOne += (eRkWMod < 0)? eRkWMod: 0;
+			resTwo = charisma - w2;
+			resTwo += (eRkWMod < 0)? eRkWMod: 0;
+			resThree = constitution - w3;
+			resThree += (eRkWMod < 0)? eRkWMod: 0;
+			spellResult = (eRkWMod > 0)? eRkWMod : 0;
+			spellResult += (resOne < 0)? resOne : 0;
+			spellResult += (resTwo < 0)? resTwo : 0;
+			spellResult += (resThree < 0)? resThree : 0;
+			spellResult = (spellResult == 0)? 1 : spellResult;
+			spellResult = Math.min(spellResult,eRkW);
+
+            luck = (spellResult >= 0)? "Erfolg":"Misserfolg";
+            wSum1 = w1 + w2
+            wSum2 = w1 + w3
+            wSum3 = w2 + w3
+            wSum4 = w1 + w2 + w3
+            if(wSum1 == 2 || wSum2 == 2 || wSum3 == 2){
+                if(wSum4 == 3){
+                    luck = "Spektakulärer Erfolg";
+                }else{
+                    luck = "Glücklicher Erfolg";
+                };
+            };
+            if(wSum1 == 40 || wSum2 == 40 || wSum3 == 40){
+                if(wSum4 == 60){
+                    luck = "Spektakulärer Patzer";
+                }else{
+                    luck = "Patzer";
+                };
+            };
+
+		//Verlust von LeP durch die Astrale Meditation
+		if(checkThonnysInput === true){
+			LePdecrease = TimeInput;
+		}if(checkThonnysInput === false){
+			LePdecrease = TimeInput + w4 - 1;
+		}
+
+		
+		//Gewinn von AsP durch die Astrale Meditation
+		if(checkThonnysInput === true && CheckAMMod === false){
+			AsPincrease = Math.min(TimeInput || ((Math.floor(Math.random() * 6) + 1) + (Math.floor(Math.random() * 6) + 1) + 2));	//Fehlt die SF: Astrale Meditation kann mithilfe von Thonnys nur 2W6 + 2 LeP in AsP umgewandelt werden
+		}if(checkThonnysInput === true){
+			AsPincrease = TimeInput;
+			}else{
+			AsPincrease = TimeInput - 1;
+		}
+		
+		if(spellResult < 0){
+			newLeP = vitality;
+			newAsP = astralEnergy;
+		}else{
+			newLeP = vitality - LePdecrease;		
+			newAsP = astralEnergy + AsPincrease;
+		}
+
+		//Chat Output
+			flavor = "<b>" + tokenName + "</b> versinkt für " + TimeMinutes + " Minuten in eine tiefe Meditation";
+			if(spellResult > 0){
+				flavor += " und wandelt " + LePdecrease + " LeP in " + AsPincrease + " AsP um."
+			}else{
+				flavor += ", kann aber keine LeP in AsP umwandeln."
+			}
+			flavor += "<br>IN: " + w1 + " / " + "<b>" + intuition + "</b>" + " (" + resOne + ")";
+			flavor += "<br>CH: " + w2 + " / " + "<b>" + charisma + "</b>" + " (" + resTwo + ")";
+			flavor += "<br>KO: " + w3 + " / " + "<b>" + constitution + "</b>" + " (" + resThree + ")";
+			flavor += "<br>RkW*: " + spellResult + " (" + luck + ")";
+			flavor += "<br>" + hr;
+			flavor += "LeP: " + newLeP + "/ AsP: " + newAsP;
+
+					
+			roll.toMessage ({
+				flavor: flavor,
+				speaker: ChatMessage.getSpeaker({token: token.document})
+			},
+			{rollMode}
+			);
+			updating(newLeP, newAsP)
+		});
+			function updating(newLeP, newAsP){
+			   
+				LePUpdate = newLeP;
+				AsPUpdate = newAsP;
+				
+				token.actor.update({
+					'system.base.resources.vitality.value': LePUpdate,
+					'system.base.resources.astralEnergy.value': AsPUpdate,
+				});
+			}
+		});
+	}
+}		   
