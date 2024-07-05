@@ -594,15 +594,15 @@ async function main() {
         }
 		
 	//Roll the dice
-		incomeDice = String(Time) + incomeDice_dx;
-		incomeRoll = new Roll(incomeDice).roll({async: true});
-		incomeRoll.then(roll =>{
-			let incomeResult = roll.total;
-		JobtimeDice_dx = "d6";
+		JobtimeDice_dx = "d4";
 		JobtimeDice = String(Time) + JobtimeDice_dx;
 		JobtimeRoll = new Roll(JobtimeDice).roll({async:true})
 		JobtimeRoll.then(roll =>{
-			let JobtimeResult = roll.total;
+			let JobtimeResult = (Time * 2) + roll.total;
+		incomeDice = String(JobtimeResult) + incomeDice_dx;
+		incomeRoll = new Roll(incomeDice).roll({async: true});
+		incomeRoll.then(roll =>{
+			let incomeResult = roll.total;
 		illegalDice = "1d20";
 		illegalRoll = new Roll(illegalDice).roll({async:true})
 		illegalRoll.then(roll =>{
@@ -630,30 +630,30 @@ async function main() {
 		}
 		
 	//Einfluss der Talentwertes auf den Lohn
-		if(TalentValue < 7){
-			TaWmod = (4 - (7 - TalentValue))/4;
-		}if(TalentValue > 12){
-			TaWmod = (4 + (TalentValue - 12))/4;
-		}else{
+		if(TalentValue >= 7 && TalentValue <= 12){
 			TaWmod = 1;
+		}if(TalentValue < 7){
+			TaWmod = 1 - ((7 - TalentValue)/4);
+		}if(TalentValue > 12){
+			TaWmod = 1 + ((TalentValue - 12)/4);
 		}
 		
 	//Einfluss eines unpassenden Sozialstatus auf den Lohn
-		if(SozialstatusValue < lowerSO){
-			SOmod = (lowerSO - SozialstatusValue)/100;
-		}if(SozialstatusValue > upperSO){
-			SOmod = 1 + ((SozialstatusValue - upperSO)/100);
-		}else{
+		if(SozialstatusValue >= lowerSO && SozialstatusValue <= upperSO){
 			SOmod = 1;
+		}if(SozialstatusValue < lowerSO){
+			SOmod = 1 - ((lowerSO - SozialstatusValue)/10);
+		}if(SozialstatusValue > upperSO){
+			SOmod = 1 + ((SozialstatusValue - upperSO)/10);
 		}
-
+		
 	//Berechnung des Einkommens nach Einkommenslevel
 		if(SalaryLvl === Low){
 			Income = incomeResult;
 		}if(SalaryLvl === Mid){
 			Income = incomeResult*10;
 		}if(SalaryLvl === Upper){
-			Income = (Time*Upper) + ((incomeResult - 1)*10);
+			Income = Upper + ((incomeResult - 1)*10);
 		}if(SalaryLvl === High){
 			Income = incomeResult*100;
 		}if(SalaryLvl === None){
@@ -664,7 +664,7 @@ async function main() {
 		if((TalentValue < 4) || ((legal === 0) && (illegalResult < Caught))){
 			FinalSalary = None;
 		}else{
-			FinalSalary =  Math.round(JobtimeResult * TaWmod * SOmod * Income);
+			FinalSalary =  Math.round(TaWmod * SOmod * Income);
 		}
 
 	//Umrechnung in Dukaten, Silber, Heller:
@@ -691,12 +691,13 @@ async function main() {
 		flavor += Heller + " / -" + (Time * costsHeller) + " /   <b>" + NettoHeller + "</b> Heller<br>";
 		flavor += "Talentwert: " + TalentValue + "<br>";
 //		flavor += "FinalSalary: " + FinalSalary + "<br>";						//Test, ob Skript funktioniert
-//		flavor += "incomeDice: " + incomeDice + "<br>";							//Test, ob Skript funktioniert
+		flavor += "TaWmod: " + TaWmod + "<br>";						//Test, ob Skript funktioniert
+		flavor += "SOmod: " + SOmod + "<br>";							//Test, ob Skript funktioniert
 //		flavor += "incomeResult: " + incomeResult + "<br>";						//Test, ob Skript funktioniert
 //		flavor += "Lohnstufe: " + SalaryLvl + "<br>";							//Test, ob Skript funktioniert
 //		flavor += "illegalResult: " + illegalResult + "/" + Caught + "<br>";	//Test, ob Skript funktioniert
 //		flavor += "bustedResult: " + bustedResult + "<br>";						//Test, ob Skript funktioniert
-		flavor += "Sozialstatus: " + SozialstatusValue + "<br>";				//Test, ob Skript funktioniert
+//		flavor += "Sozialstatus: " + SozialstatusValue + "<br>";				//Test, ob Skript funktioniert
 		if((legal === 0) && (illegalResult < Caught)){
 			if(bustedResult === 20){
 				flavor += "<b>" + tokenName + "</b> wird bei der Tat erwischt und eingesperrt. Die Kaution beträgt " + Deposit + " Dukaten.";
